@@ -370,4 +370,4 @@ function addMissionProgress(id, amount = 1){
   }
   saveMissionState();
   if(typeof window.renderMissions === 'function') window.renderMissions();
-}
+} 
