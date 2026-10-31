@@ -25,14 +25,14 @@ jobs:
 
       - name: Build Android APK with Capacitor
         run: |
-          # Buat project node sementara secara otomatis agar tidak error package.json
+          # Buat project node sementara agar tidak error package.json
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-          # Inisialisasi Capacitor
-          npx cap init Appnesia com.appnesia.web --web-dir www --yes
+          # Inisialisasi Capacitor (Tanpa --yes)
+          npx cap init Appnesia com.appnesia.web --web-dir www
 
-          # Buat folder web dan salin file web kamu (index.html / data.js)
+          # Buat folder www dan salin file web kamu
           mkdir -p www
           if [ -f "index.html" ]; then
             cp index.html www/index.html
