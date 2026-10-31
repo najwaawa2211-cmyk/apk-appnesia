@@ -23,33 +23,45 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      # 1. Setup Android SDK (Tanpa action pembungkus)
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Capacitor CLI
-        run: npm install -g @capacitor/cli @capacitor/core @capacitor/android
-
-      - name: Create Capacitor Project
         run: |
-          # Membuat folder kerja baru
+          # Set environment variable
+          export ANDROID_HOME=$HOME/android-sdk
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+          
+          # Download command line tools
+          mkdir -p $ANDROID_HOME/cmdline-tools
+          cd $ANDROID_HOME/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O tools.zip
+          unzip -q tools.zip
+          mv cmdline-tools latest
+          
+          # Terima semua lisensi secara otomatis (INI SOLUSI ERROR KAMU)
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          
+          # Install platform yang dibutuhkan Capacitor
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      # 2. Build pakai Capacitor
+      - name: Create Capacitor Project & Build
+        run: |
+          export ANDROID_HOME=$HOME/android-sdk
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+          
+          npm install -g @capacitor/cli @capacitor/core @capacitor/android
           mkdir web-app && cd web-app
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
           
-          # Inisialisasi Capacitor
           npx cap init Appnesia com.appnesia.web --web-dir=www
           mkdir www
-          
-          # Copy file HTML dan JS kamu ke folder www
           cp ../index.html www/
           cp ../data.js www/
           
-          # Tambah platform Android
           npx cap add android
-
-      - name: Build APK
-        run: |
-          cd web-app/android
+          
+          cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
