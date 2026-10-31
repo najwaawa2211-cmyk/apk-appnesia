@@ -15,31 +15,46 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
-      - name: Install Cordova
-        run: npm install -g cordova
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
 
-      - name: Create Cordova Project
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli @capacitor/core @capacitor/android
+
+      - name: Create Capacitor Project
         run: |
-          cordova create app com.appnesia.web Appnesia
-          cp index.html app/www/index.html
-          cp data.js app/www/data.js
-          # Salin semua file lain jika ada (misal gambar/CSS eksternal)
-          # cp -r assets/* app/www/ || true
+          # Membuat folder kerja baru
+          mkdir web-app && cd web-app
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/android
           
-      - name: Add Android Platform
-        run: |
-          cd app
-          cordova platform add android
+          # Inisialisasi Capacitor
+          npx cap init Appnesia com.appnesia.web --web-dir=www
+          mkdir www
+          
+          # Copy file HTML dan JS kamu ke folder www
+          cp ../index.html www/
+          cp ../data.js www/
+          
+          # Tambah platform Android
+          npx cap add android
 
       - name: Build APK
         run: |
-          cd app
-          cordova build android
+          cd web-app/android
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Appnesia-APK
-          path: app/platforms/android/app/build/outputs/apk/debug/*.apk
+          path: web-app/android/app/build/outputs/apk/debug/app-debug.apk
