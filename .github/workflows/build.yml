@@ -23,34 +23,18 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Android SDK
-        run: |
-          export ANDROID_HOME=$HOME/android-sdk
-          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-          
-          mkdir -p $ANDROID_HOME/cmdline-tools
-          cd $ANDROID_HOME/cmdline-tools
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O tools.zip
-          unzip -q tools.zip
-          mv cmdline-tools latest
-          
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-
       - name: Build APK with Capacitor
         run: |
-          export ANDROID_HOME=$HOME/android-sdk
-          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-          
-          npm install -g @capacitor/cli @capacitor/core @capacitor/android
-          
-          # Hapus folder web-app kalau ada sisa dari percobaan sebelumnya
+          # Hapus folder sisa error sebelumnya
           rm -rf web-app
           
+          # Install Capacitor
+          npm install -g @capacitor/cli @capacitor/core @capacitor/android
           mkdir web-app && cd web-app
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
           
+          # Buat konfigurasi
           echo '{
             "appId": "com.appnesia.web",
             "appName": "Appnesia",
@@ -59,16 +43,20 @@ jobs:
           }' > capacitor.config.json
           
           mkdir www
+          # Copy file dari root folder
+          cp ../index.html ./www/
+          cp ../data.js ./www/
           
-          # PERBAIKAN: Salin file index.html dan data.js dari luar (root folder)
-          # Kita paksa cari ke 1 folder di atasnya
-          cp ../index.html ./www/ || cp ../../index.html ./www/
-          cp ../data.js ./www/ || cp ../../data.js ./www/
-          
+          # Tambah Android
           npx cap add android
+          
+          # PENTING: Set lokasi SDK bawaan GitHub agar Gradle tidak bingung
+          echo "sdk.dir=/usr/local/lib/android/sdk" > android/local.properties
           
           cd android
           chmod +x gradlew
+          
+          # Jalankan build
           ./gradlew assembleDebug
 
       - name: Upload APK
