@@ -12,43 +12,47 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. Setup Node.js untuk project web & Capacitor kamu
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      # 2. Setup Java JDK 17 untuk Android Gradle
       - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      # 3. Install dependencies & Build Capacitor Android
       - name: Build Android APK with Capacitor
         run: |
-          # Install modul Node (pastikan package.json ada di root)
-          npm install
-          
-          # Jika project kamu butuh proses build web (misal Vite/React/Vue/HTML biasa)
-          # npm run build  <-- (Aktifkan baris ini jika web kamu perlu di-build dulu)
+          # Buat project node sementara secara otomatis agar tidak error package.json
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/android
 
-          # Inisialisasi atau update platform Android Capacitor
-          npx cap init --name "Appnesia" --bundle-id "com.appnesia.web" --yes || true
-          
-          # Tambahkan platform android jika belum ada
+          # Inisialisasi Capacitor
+          npx cap init Appnesia com.appnesia.web --web-dir www --yes
+
+          # Buat folder web dan salin file web kamu (index.html / data.js)
+          mkdir -p www
+          if [ -f "index.html" ]; then
+            cp index.html www/index.html
+          else
+            echo "<h1>Appnesia</h1>" > www/index.html
+          fi
+
+          if [ -f "data.js" ]; then
+            cp data.js www/data.js
+          fi
+
+          # Tambahkan platform android dan sinkronkan
           npx cap add android
-
-          # Sinkronkan file web web kamu ke folder android
           npx cap sync android
 
-          # Masuk ke folder android lalu jalankan gradle build debug
+          # Masuk ke folder android lalu build apk debug
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      # 4. Upload file APK hasil build Capacitor
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
