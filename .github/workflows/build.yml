@@ -12,55 +12,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      # KITA GANTI KE JAVA 21 SESUAI PERMINTAAN ERROR
       - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '21'
+          java-version: '17'
 
-      - name: Build APK with Capacitor
+      # Pakai template WebView super simpel (gak pakai Capacitor/Cordova)
+      - name: Build APK with WebView Template
         run: |
-          # Bersihkan folder lama
-          rm -rf web-app
+          # Download template Android WebView yang sudah jadi
+          git clone https://github.com/uriklar/simple-webview-apk.git android-app
           
-          # Install Capacitor
-          npm install -g @capacitor/cli @capacitor/core @capacitor/android
-          mkdir web-app && cd web-app
-          npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+          # Masukkan file web lu ke dalam template
+          cp index.html android-app/app/src/main/assets/index.html
+          cp data.js android-app/app/src/main/assets/data.js
           
-          # Buat konfigurasi
-          echo '{
-            "appId": "com.appnesia.web",
-            "appName": "Appnesia",
-            "webDir": "www",
-            "bundledWebRuntime": false
-          }' > capacitor.config.json
+          # Ganti nama aplikasi di manifest (opsional, biar keren)
+          sed -i 's/SimpleWebView/Appnesia/g' android-app/app/src/main/res/values/strings.xml
+          sed -i 's/com.example.simplewebview/com.appnesia.web/g' android-app/app/build.gradle
           
-          mkdir www
-          cp ../index.html ./www/
-          cp ../data.js ./www/
-          
-          # Tambah Android
-          npx cap add android
-          
-          # Arahkan ke SDK bawaan GitHub
-          echo "sdk.dir=/usr/local/lib/android/sdk" > android/local.properties
-          
-          cd android
+          # Build APK
+          cd android-app
           chmod +x gradlew
-          
-          # Jalankan build
           ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Appnesia-APK
-          path: web-app/android/app/build/outputs/apk/debug/app-debug.apk
+          path: android-app/app/build/outputs/apk/debug/app-debug.apk
