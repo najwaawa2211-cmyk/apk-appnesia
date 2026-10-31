@@ -1,4 +1,4 @@
-Name: Build APK Appnesia
+name: Build Capacitor APK
 
 on:
   push:
@@ -12,118 +12,45 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 1. Setup Node.js untuk project web & Capacitor kamu
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # 2. Setup Java JDK 17 untuk Android Gradle
       - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Build APK with WebView
+      # 3. Install dependencies & Build Capacitor Android
+      - name: Build Android APK with Capacitor
         run: |
-          # Buat struktur direktori WebView sederhana secara manual langsung di runner
-          mkdir -p android-app/app/src/main/assets
-          mkdir -p android-app/app/src/main/java/com/appnesia/web
-          mkdir -p android-app/app/src/main/res/values
+          # Install modul Node (pastikan package.json ada di root)
+          npm install
+          
+          # Jika project kamu butuh proses build web (misal Vite/React/Vue/HTML biasa)
+          # npm run build  <-- (Aktifkan baris ini jika web kamu perlu di-build dulu)
 
-          # Salin file web kamu ke folder assets
-          cp index.html android-app/app/src/main/assets/index.html
-          cp data.js android-app/app/src/main/assets/data.js
+          # Inisialisasi atau update platform Android Capacitor
+          npx cap init --name "Appnesia" --bundle-id "com.appnesia.web" --yes || true
+          
+          # Tambahkan platform android jika belum ada
+          npx cap add android
 
-          # Buat file build.gradle minimal untuk android-app
-          cat << 'EOF' > android-app/build.gradle
-          buildscript {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-              dependencies {
-                  classpath 'com.android.tools.build:gradle:7.4.2'
-              }
-          }
-          allprojects {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-          }
-          EOF
+          # Sinkronkan file web web kamu ke folder android
+          npx cap sync android
 
-          # Buat settings.gradle
-          echo "include ':app'" > android-app/settings.gradle
-
-          # Buat app/build.gradle
-          cat << 'EOF' > android-app/app/build.gradle
-          plugins {
-              id 'com.android.application'
-          }
-          android {
-              compileSdk 33
-              defaultConfig {
-                  applicationId "com.appnesia.web"
-                  minSdk 21
-                  targetSdk 33
-                  versionCode 1
-                  versionName "1.0"
-              }
-          }
-          dependencies {
-              implementation 'androidx.appcompat:appcompat:1.6.1'
-          }
-          EOF
-
-          # Buat AndroidManifest.xml sederhana
-          cat << 'EOF' > android-app/app/src/main/AndroidManifest.xml
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-              package="com.appnesia.web">
-              <uses-permission android:name="android.permission.INTERNET" />
-              <application
-                  android:allowBackup="true"
-                  android:label="Appnesia"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-                  <activity
-                      android:name=".MainActivity"
-                      android:exported="true">
-                      <intent-filter>
-                          <action android:name="android.intent.action.MAIN" />
-                          <category android:name="android.intent.category.LAUNCHER" />
-                      </intent-filter>
-                  </activity>
-              </application>
-          </manifest>
-          EOF
-
-          # Buat MainActivity.java untuk WebView
-          cat << 'EOF' > android-app/app/src/main/java/com/appnesia/web/MainActivity.java
-          package com.appnesia.web;
-          import android.os.Bundle;
-          import android.webkit.WebView;
-          import androidx.appcompat.app.AppCompatActivity;
-          public class MainActivity extends AppCompatActivity {
-              @Override
-              protected void onCreate(Bundle savedInstanceState) {
-                  super.onCreate(savedInstanceState);
-                  WebView webView = new WebView(this);
-                  webView.getSettings().setJavaScriptEnabled(true);
-                  webView.loadUrl("file:///android_asset/index.html");
-                  setContentView(webView);
-              }
-          }
-          EOF
-
-          # Buat strings.xml
-          cat << 'EOF' > android-app/app/src/main/res/values/strings.xml
-          <resources>
-              <string name="app_name">Appnesia</string>
-          </resources>
-          EOF
-
-          # Buat gradlew wrapper sederhana / gunakan gradle langsung jika tersedia
-          cd android-app
-          gradle wrapper
+          # Masuk ke folder android lalu jalankan gradle build debug
+          cd android
+          chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload APK
+      # 4. Upload file APK hasil build Capacitor
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Appnesia-APK
-          path: android-app/app/build/outputs/apk/debug/app-debug.apk
+          name: Appnesia-Capacitor-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
