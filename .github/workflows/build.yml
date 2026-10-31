@@ -1,0 +1,26 @@
+name: Build APK Appnesia
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build APK using Cordova
+        uses: oliveiira/gh-action-cordova-build@master
+        with:
+          app-name: "Appnesia"
+          package-name: "com.appnesia.web"
+          web-dir: "."
+          
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Appnesia-APK
+          path: platforms/android/app/build/outputs/apk/debug/*.apk
