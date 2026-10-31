@@ -1,4 +1,4 @@
-name: Build APK Appnesia
+Name: Build APK Appnesia
 
 on:
   push:
@@ -18,23 +18,108 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      # Pakai template WebView super simpel (gak pakai Capacitor/Cordova)
-      - name: Build APK with WebView Template
+      - name: Build APK with WebView
         run: |
-          # Download template Android WebView yang sudah jadi
-          git clone https://github.com/uriklar/simple-webview-apk.git android-app
-          
-          # Masukkan file web lu ke dalam template
+          # Buat struktur direktori WebView sederhana secara manual langsung di runner
+          mkdir -p android-app/app/src/main/assets
+          mkdir -p android-app/app/src/main/java/com/appnesia/web
+          mkdir -p android-app/app/src/main/res/values
+
+          # Salin file web kamu ke folder assets
           cp index.html android-app/app/src/main/assets/index.html
           cp data.js android-app/app/src/main/assets/data.js
-          
-          # Ganti nama aplikasi di manifest (opsional, biar keren)
-          sed -i 's/SimpleWebView/Appnesia/g' android-app/app/src/main/res/values/strings.xml
-          sed -i 's/com.example.simplewebview/com.appnesia.web/g' android-app/app/build.gradle
-          
-          # Build APK
+
+          # Buat file build.gradle minimal untuk android-app
+          cat << 'EOF' > android-app/build.gradle
+          buildscript {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:7.4.2'
+              }
+          }
+          allprojects {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          EOF
+
+          # Buat settings.gradle
+          echo "include ':app'" > android-app/settings.gradle
+
+          # Buat app/build.gradle
+          cat << 'EOF' > android-app/app/build.gradle
+          plugins {
+              id 'com.android.application'
+          }
+          android {
+              compileSdk 33
+              defaultConfig {
+                  applicationId "com.appnesia.web"
+                  minSdk 21
+                  targetSdk 33
+                  versionCode 1
+                  versionName "1.0"
+              }
+          }
+          dependencies {
+              implementation 'androidx.appcompat:appcompat:1.6.1'
+          }
+          EOF
+
+          # Buat AndroidManifest.xml sederhana
+          cat << 'EOF' > android-app/app/src/main/AndroidManifest.xml
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+              package="com.appnesia.web">
+              <uses-permission android:name="android.permission.INTERNET" />
+              <application
+                  android:allowBackup="true"
+                  android:label="Appnesia"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+          # Buat MainActivity.java untuk WebView
+          cat << 'EOF' > android-app/app/src/main/java/com/appnesia/web/MainActivity.java
+          package com.appnesia.web;
+          import android.os.Bundle;
+          import android.webkit.WebView;
+          import androidx.appcompat.app.AppCompatActivity;
+          public class MainActivity extends AppCompatActivity {
+              @Override
+              protected void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  WebView webView = new WebView(this);
+                  webView.getSettings().setJavaScriptEnabled(true);
+                  webView.loadUrl("file:///android_asset/index.html");
+                  setContentView(webView);
+              }
+          }
+          EOF
+
+          # Buat strings.xml
+          cat << 'EOF' > android-app/app/src/main/res/values/strings.xml
+          <resources>
+              <string name="app_name">Appnesia</string>
+          </resources>
+          EOF
+
+          # Buat gradlew wrapper sederhana / gunakan gradle langsung jika tersedia
           cd android-app
-          chmod +x gradlew
+          gradle wrapper
           ./gradlew assembleDebug
 
       - name: Upload APK
