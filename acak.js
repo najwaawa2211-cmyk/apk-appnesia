@@ -60,7 +60,7 @@ try {
             chunks.push(`"${base64Html.slice(i, i + CHUNK_SIZE)}"`);
         }
 
-        // Loader
+        // Loader Anti-Rusak (Pakai DOMParser)
         const loaderHtml = `<!DOCTYPE html>
 <html>
 <head>
@@ -69,7 +69,7 @@ try {
 <title>Appnesia</title>
 <style>
   body { margin:0; padding:0; background:#000; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; }
-  #loader { text-align:center; }
+  #loader { text-align:center; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -91,9 +91,25 @@ try {
     
     var decodedHtml = new TextDecoder('utf-8').decode(bytes);
 
-    document.open();
-    document.write(decodedHtml);
-    document.close();
+    // 🛠️ TRIK ANTI RUSAK: Parse HTML asli, lalu suntikkan ke WebView
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(decodedHtml, 'text/html');
+    
+    // 1. Ambil CSS & Meta tag asli
+    document.head.innerHTML = doc.head.innerHTML;
+    
+    // 2. Ambil Body asli
+    document.body.innerHTML = doc.body.innerHTML;
+
+    // 3. Jalankan ulang script asli (biar fitur & tombol jalan)
+    var scripts = document.body.querySelectorAll('script');
+    scripts.forEach(function(oldScript) {
+        var newScript = document.createElement('script');
+        Array.from(oldScript.attributes).forEach(function(attr) { newScript.setAttribute(attr.name, attr.value); });
+        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+
   } catch (e) {
     document.body.innerHTML = "<h2 style='color:red;text-align:center;'>Gagal memuat: " + e.message + "</h2>";
   }
@@ -110,4 +126,4 @@ try {
 } catch (e) {
     console.error('❌ Gagal index.html:', e.message);
     process.exit(1);
-                    }
+                   }
