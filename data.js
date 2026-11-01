@@ -119,161 +119,159 @@ const APPS = [
   {id:'outlook', name:'Microsoft Outlook', dev:'Microsoft', cat:'Produktivitas', icon:'📧', color:'#0078D4', pkg:'com.microsoft.office.outlook', desc:'Email dan kalender dari Microsoft.'},
   {id:'gmail', name:'Gmail', dev:'Google LLC', cat:'Produktivitas', icon:'📧', color:'#EA4335', pkg:'com.google.android.gm', desc:'Email dari Google dengan penyimpanan besar.'},
   {id:'dropbox', name:'Dropbox', dev:'Dropbox', cat:'Produktivitas', icon:'📦', color:'#0061FF', pkg:'com.dropbox.android', desc:'Penyimpanan awan dan sinkronisasi berkas.'},
- /* ==================== EDUKASI (20) ==================== */
-{id:'duolingo', name:'Duolingo', dev:'Duolingo', cat:'Edukasi', icon:'🦉', color:'#58CC02', pkg:'com.duolingo', desc:'Belajar bahasa asing dengan cara menyenangkan.'},
-{id:'udemy', name:'Udemy', dev:'Udemy', cat:'Edukasi', icon:'🎓', color:'#A435F0', pkg:'com.udemy.android', desc:'Kursus daring dari ribuan instruktur.'},
-{id:'coursera', name:'Coursera', dev:'Coursera', cat:'Edukasi', icon:'🎓', color:'#0056D2', pkg:'org.coursera.android', desc:'Kursus dari universitas terkemuka dunia.'},
-{id:'khan', name:'Khan Academy', dev:'Khan Academy', cat:'Edukasi', icon:'📖', color:'#14BF96', pkg:'org.khanacademy.android', desc:'Pelajaran gratis matematika, sains, dan lainnya.'},
-{id:'ruangguru', name:'Ruangguru', dev:'Ruangguru', cat:'Edukasi', icon:'📚', color:'#00A5CF', pkg:'com.ruangguru.learning', desc:'Bimbingan belajar online untuk siswa Indonesia.'},
-{id:'zenius', name:'Zenius', dev:'Zenius', cat:'Edukasi', icon:'🎓', color:'#E82529', pkg:'com.zenius.app', desc:'Platform belajar untuk persiapan ujian.'},
-{id:'classroom', name:'Google Classroom', dev:'Google LLC', cat:'Edukasi', icon:'🏫', color:'#0F9D58', pkg:'com.google.android.apps.classroom', desc:'Kelola kelas dan tugas online dari Google.'},
-{id:'quizlet', name:'Quizlet', dev:'Quizlet', cat:'Edukasi', icon:'🃏', color:'#4255FF', pkg:'com.quizlet.quizletandroid', desc:'Kartu belajar dan kuis interaktif.'},
-{id:'brainly', name:'Brainly', dev:'Brainly', cat:'Edukasi', icon:'🧠', color:'#FF5B00', pkg:'co.brainly', desc:'Tanya jawab pelajaran dengan siswa lain.'},
-{id:'photomath', name:'Photomath', dev:'Google LLC', cat:'Edukasi', icon:'📐', color:'#C81E1E', pkg:'com.microblink.photomath', desc:'Selesaikan soal matematika lewat kamera.'},
-{id:'babbel', name:'Babbel', dev:'Babbel', cat:'Edukasi', icon:'🗣️', color:'#FF7C00', pkg:'com.babbel.mobile.android.en', desc:'Belajar bahasa dengan percakapan praktis.'},
-{id:'memrise', name:'Memrise', dev:'Memrise', cat:'Edukasi', icon:'📖', color:'#FFCD00', pkg:'com.memrise.android.memrisecompanion', desc:'Belajar bahasa dengan video penutur asli.'},
-{id:'busuu', name:'Busuu', dev:'Busuu', cat:'Edukasi', icon:'🗣️', color:'#1D7EEA', pkg:'com.busuu.android.enc', desc:'Kursus bahasa dengan koreksi penutur asli.'},
-{id:'edx', name:'edX', dev:'edX', cat:'Edukasi', icon:'🎓', color:'#02262B', pkg:'org.edx.mobile', desc:'Kursus daring dari universitas global.'},
-{id:'linkedinlearn', name:'LinkedIn Learning', dev:'LinkedIn', cat:'Edukasi', icon:'💼', color:'#0A66C2', pkg:'com.linkedin.android.learning', desc:'Kursus keterampilan profesional.'},
-{id:'skillshare', name:'Skillshare', dev:'Skillshare', cat:'Edukasi', icon:'🎨', color:'#00FF84', pkg:'com.skillshare.Skillshare', desc:'Kelas kreatif dari praktisi industri.'},
-{id:'sololearn', name:'SoloLearn', dev:'SoloLearn', cat:'Edukasi', icon:'💻', color:'#149EF2', pkg:'com.sololearn', desc:'Belajar coding gratis di ponsel.'},
-{id:'codecademy', name:'Codecademy Go', dev:'Codecademy', cat:'Edukasi', icon:'💻', color:'#1F4056', pkg:'com.ryzac.codecademygo', desc:'Latihan coding dari Codecademy.'},
-{id:'brilliant', name:'Brilliant', dev:'Brilliant', cat:'Edukasi', icon:'💡', color:'#30B0C7', pkg:'org.brilliant.android', desc:'Belajar matematika dan sains interaktif.'},
-{id:'tofel', name:'TOEFL Go!', dev:'ETS', cat:'Edukasi', icon:'📝', color:'#0F4C81', pkg:'', desc:'Latihan resmi persiapan tes TOEFL.'},
 
-/* ==================== KEUANGAN (20) ==================== */
-{id:'dana', name:'DANA', dev:'DANA Indonesia', cat:'Keuangan', icon:'💳', color:'#118EEA', pkg:'id.dana', desc:'Dompet digital untuk pembayaran dan transfer.'},
-{id:'ovo', name:'OVO', dev:'Visionet Indotama', cat:'Keuangan', icon:'🟣', color:'#4C3494', pkg:'id.co.ovo', desc:'Dompet digital untuk pembayaran merchant.'},
-{id:'brimo', name:'BRImo', dev:'Bank BRI', cat:'Keuangan', icon:'🏦', color:'#00529C', pkg:'id.co.bri.brimo', desc:'Mobile banking Bank BRI.'},
-{id:'livin', name:"Livin' by Mandiri", dev:'Bank Mandiri', cat:'Keuangan', icon:'💙', color:'#003D79', pkg:'id.bmri.livin', desc:'Mobile banking Bank Mandiri.'},
-{id:'bca', name:'BCA mobile', dev:'Bank BCA', cat:'Keuangan', icon:'🏧', color:'#0060AF', pkg:'com.bca', desc:'Mobile banking Bank Central Asia.'},
-{id:'bibit', name:'Bibit', dev:'Bibit', cat:'Keuangan', icon:'📈', color:'#00B2A9', pkg:'com.bibit', desc:'Aplikasi investasi reksa dana.'},
-{id:'linkaja', name:'LinkAja', dev:'LinkAja', cat:'Keuangan', icon:'🔴', color:'#E82529', pkg:'com.telkomsel.linkaja', desc:'Dompet digital untuk pembayaran dan pulsa.'},
-{id:'gopay', name:'GoPay', dev:'Gojek', cat:'Keuangan', icon:'💚', color:'#00AA13', pkg:'', desc:'Dompet digital dari ekosistem Gojek.'},
-{id:'shopeepay', name:'ShopeePay', dev:'Shopee', cat:'Keuangan', icon:'🧡', color:'#EE4D2D', pkg:'', desc:'Dompet digital dari Shopee.'},
-{id:'flip', name:'Flip', dev:'Flip', cat:'Keuangan', icon:'💸', color:'#FF6B00', pkg:'com.flip.id', desc:'Transfer antar bank tanpa biaya admin.'},
-{id:'jenius', name:'Jenius', dev:'BTPN', cat:'Keuangan', icon:'💙', color:'#00AAE7', pkg:'com.btpn.dc', desc:'Bank digital dari BTPN.'},
-{id:'seabank', name:'SeaBank', dev:'SeaBank', cat:'Keuangan', icon:'🟠', color:'#FF5722', pkg:'com.seabank.mobile', desc:'Bank digital dari Shopee/Sea Group.'},
-{id:'ajaib', name:'Ajaib', dev:'Ajaib', cat:'Keuangan', icon:'📈', color:'#00C853', pkg:'com.ajaib', desc:'Investasi saham dan reksa dana.'},
-{id:'stockbit', name:'Stockbit', dev:'Stockbit', cat:'Keuangan', icon:'📊', color:'#1E88E5', pkg:'com.stockbit.android', desc:'Komunitas dan analisis saham Indonesia.'},
-{id:'pluang', name:'Pluang', dev:'Pluang', cat:'Keuangan', icon:'📈', color:'#6C5CE7', pkg:'com.pluang.android', desc:'Investasi emas, saham, dan kripto.'},
-{id:'indodax', name:'Indodax', dev:'Indodax', cat:'Keuangan', icon:'₿', color:'#00A8E1', pkg:'com.indodax.android', desc:'Bursa kripto terbesar di Indonesia.'},
-{id:'cimb', name:'CIMB Niaga', dev:'CIMB Niaga', cat:'Keuangan', icon:'🔴', color:'#B71C1C', pkg:'id.co.cimbniaga.mobile.android', desc:'Mobile banking CIMB Niaga.'},
-{id:'permatamobile', name:'PermataMobile X', dev:'PermataBank', cat:'Keuangan', icon:'🟢', color:'#007A33', pkg:'com.permatabank.pmb', desc:'Mobile banking PermataBank.'},
-{id:'bankjago', name:'Bank Jago', dev:'Bank Jago', cat:'Keuangan', icon:'🟠', color:'#F57C00', pkg:'', desc:'Bank digital dari Bank Jago.'},
-{id:'blu', name:'blu by BCA Digital', dev:'BCA Digital', cat:'Keuangan', icon:'💙', color:'#005BAA', pkg:'', desc:'Bank digital dari BCA.'},
+  /* ==================== EDUKASI (20) ==================== */
+  {id:'duolingo', name:'Duolingo', dev:'Duolingo', cat:'Edukasi', icon:'🦉', color:'#58CC02', pkg:'com.duolingo', desc:'Belajar bahasa asing dengan cara menyenangkan.'},
+  {id:'udemy', name:'Udemy', dev:'Udemy', cat:'Edukasi', icon:'🎓', color:'#A435F0', pkg:'com.udemy.android', desc:'Kursus daring dari ribuan instruktur.'},
+  {id:'coursera', name:'Coursera', dev:'Coursera', cat:'Edukasi', icon:'🎓', color:'#0056D2', pkg:'org.coursera.android', desc:'Kursus dari universitas terkemuka dunia.'},
+  {id:'khan', name:'Khan Academy', dev:'Khan Academy', cat:'Edukasi', icon:'📖', color:'#14BF96', pkg:'org.khanacademy.android', desc:'Pelajaran gratis matematika, sains, dan lainnya.'},
+  {id:'ruangguru', name:'Ruangguru', dev:'Ruangguru', cat:'Edukasi', icon:'📚', color:'#00A5CF', pkg:'com.ruangguru.learning', desc:'Bimbingan belajar online untuk siswa Indonesia.'},
+  {id:'zenius', name:'Zenius', dev:'Zenius', cat:'Edukasi', icon:'🎓', color:'#E82529', pkg:'com.zenius.app', desc:'Platform belajar untuk persiapan ujian.'},
+  {id:'classroom', name:'Google Classroom', dev:'Google LLC', cat:'Edukasi', icon:'🏫', color:'#0F9D58', pkg:'com.google.android.apps.classroom', desc:'Kelola kelas dan tugas online dari Google.'},
+  {id:'quizlet', name:'Quizlet', dev:'Quizlet', cat:'Edukasi', icon:'🃏', color:'#4255FF', pkg:'com.quizlet.quizletandroid', desc:'Kartu belajar dan kuis interaktif.'},
+  {id:'brainly', name:'Brainly', dev:'Brainly', cat:'Edukasi', icon:'🧠', color:'#FF5B00', pkg:'co.brainly', desc:'Tanya jawab pelajaran dengan siswa lain.'},
+  {id:'photomath', name:'Photomath', dev:'Google LLC', cat:'Edukasi', icon:'📐', color:'#C81E1E', pkg:'com.microblink.photomath', desc:'Selesaikan soal matematika lewat kamera.'},
+  {id:'babbel', name:'Babbel', dev:'Babbel', cat:'Edukasi', icon:'🗣️', color:'#FF7C00', pkg:'com.babbel.mobile.android.en', desc:'Belajar bahasa dengan percakapan praktis.'},
+  {id:'memrise', name:'Memrise', dev:'Memrise', cat:'Edukasi', icon:'📖', color:'#FFCD00', pkg:'com.memrise.android.memrisecompanion', desc:'Belajar bahasa dengan video penutur asli.'},
+  {id:'busuu', name:'Busuu', dev:'Busuu', cat:'Edukasi', icon:'🗣️', color:'#1D7EEA', pkg:'com.busuu.android.enc', desc:'Kursus bahasa dengan koreksi penutur asli.'},
+  {id:'edx', name:'edX', dev:'edX', cat:'Edukasi', icon:'🎓', color:'#02262B', pkg:'org.edx.mobile', desc:'Kursus daring dari universitas global.'},
+  {id:'linkedinlearn', name:'LinkedIn Learning', dev:'LinkedIn', cat:'Edukasi', icon:'💼', color:'#0A66C2', pkg:'com.linkedin.android.learning', desc:'Kursus keterampilan profesional.'},
+  {id:'skillshare', name:'Skillshare', dev:'Skillshare', cat:'Edukasi', icon:'🎨', color:'#00FF84', pkg:'com.skillshare.Skillshare', desc:'Kelas kreatif dari praktisi industri.'},
+  {id:'sololearn', name:'SoloLearn', dev:'SoloLearn', cat:'Edukasi', icon:'💻', color:'#149EF2', pkg:'com.sololearn', desc:'Belajar coding gratis di ponsel.'},
+  {id:'codecademy', name:'Codecademy Go', dev:'Codecademy', cat:'Edukasi', icon:'💻', color:'#1F4056', pkg:'com.ryzac.codecademygo', desc:'Latihan coding dari Codecademy.'},
+  {id:'brilliant', name:'Brilliant', dev:'Brilliant', cat:'Edukasi', icon:'💡', color:'#30B0C7', pkg:'org.brilliant.android', desc:'Belajar matematika dan sains interaktif.'},
+  {id:'tofel', name:'TOEFL Go!', dev:'ETS', cat:'Edukasi', icon:'📝', color:'#0F4C81', pkg:'', desc:'Latihan resmi persiapan tes TOEFL.'},
 
-/* ==================== BELANJA (20) ==================== */
-{id:'tokopedia', name:'Tokopedia', dev:'Tokopedia', cat:'Belanja', icon:'🛍️', color:'#42B549', pkg:'com.tokopedia.tkpd', featured:true, tagline:'Belanja dari penjual seluruh Indonesia', video:'https://www.youtube.com/watch?v=8o5gZEKhfaE', desc:'Marketplace Indonesia untuk belanja produk.'},
-{id:'shopee', name:'Shopee', dev:'Shopee', cat:'Belanja', icon:'🛒', color:'#EE4D2D', pkg:'com.shopee.id', desc:'Platform belanja daring dengan promo.'},
-{id:'lazada', name:'Lazada', dev:'Lazada Group', cat:'Belanja', icon:'📦', color:'#0F146D', pkg:'com.lazada.android', desc:'Marketplace untuk belanja elektronik dan fashion.'},
-{id:'bukalapak', name:'Bukalapak', dev:'Bukalapak', cat:'Belanja', icon:'🛒', color:'#E31E52', pkg:'com.bukalapak.android', desc:'Marketplace Indonesia untuk berbagai produk.'},
-{id:'blibli', name:'Blibli', dev:'Blibli', cat:'Belanja', icon:'🛍️', color:'#0095DA', pkg:'com.blibli.oss', desc:'Marketplace dengan garansi resmi.'},
-{id:'zalora', name:'ZALORA', dev:'ZALORA', cat:'Belanja', icon:'👗', color:'#FF5722', pkg:'com.zalora.android', desc:'Belanja fashion dan gaya hidup.'},
-{id:'sociolla', name:'Sociolla', dev:'Sociolla', cat:'Belanja', icon:'💄', color:'#FF6F91', pkg:'com.sociolla.sociolla', desc:'Belanja produk kecantikan resmi.'},
-{id:'alfacart', name:'Alfacart', dev:'Alfacart', cat:'Belanja', icon:'🛒', color:'#E53935', pkg:'com.alfacart.alfacart', desc:'Belanja kebutuhan harian dari Alfamart.'},
-{id:'bhinneka', name:'Bhinneka', dev:'Bhinneka', cat:'Belanja', icon:'💻', color:'#1E88E5', pkg:'com.bhinneka.android', desc:'Toko elektronik dan gadget resmi.'},
-{id:'ikea', name:'IKEA', dev:'IKEA', cat:'Belanja', icon:'🪑', color:'#0058A3', pkg:'com.ingka.ikea.app', desc:'Belanja furnitur dari IKEA.'},
-{id:'uniqlo', name:'UNIQLO', dev:'Fast Retailing', cat:'Belanja', icon:'👕', color:'#E60012', pkg:'com.fastretailing.android.uniqlo', desc:'Belanja pakaian dari UNIQLO.'},
-{id:'hm', name:'H&M', dev:'H&M', cat:'Belanja', icon:'👗', color:'#E50010', pkg:'com.hm.alm', desc:'Fashion dari H&M resmi.'},
-{id:'nike', name:'Nike', dev:'Nike', cat:'Belanja', icon:'👟', color:'#111111', pkg:'com.nike.omega', desc:'Belanja sepatu dan apparel Nike.'},
-{id:'adidas', name:'adidas', dev:'adidas', cat:'Belanja', icon:'👟', color:'#000000', pkg:'com.adidas.confirmed.app', desc:'Belanja produk adidas resmi.'},
-{id:'sephora', name:'Sephora', dev:'Sephora', cat:'Belanja', icon:'💄', color:'#000000', pkg:'com.sephora', desc:'Belanja kosmetik dan skincare.'},
-{id:'watsons', name:'Watsons', dev:'Watsons', cat:'Belanja', icon:'💊', color:'#00A0E9', pkg:'com.aswatson.watsonsid', desc:'Belanja obat dan kebutuhan kesehatan.'},
-{id:'erafone', name:'Erafone', dev:'Erafone', cat:'Belanja', icon:'📱', color:'#E53935', pkg:'com.erafone.android', desc:'Toko gadget dan elektronik resmi.'},
-{id:'mapemall', name:'Matahari', dev:'Matahari', cat:'Belanja', icon:'👔', color:'#E53935', pkg:'com.matahari.android', desc:'Belanja fashion dari Matahari.'},
-{id:'jd', name:'JD.ID', dev:'JD', cat:'Belanja', icon:'🛍️', color:'#E1251B', pkg:'com.jd.jdandroid', desc:'Marketplace dari JD.com Indonesia.'},
-{id:'orami', name:'Orami', dev:'Orami', cat:'Belanja', icon:'👶', color:'#FF7A00', pkg:'', desc:'Belanja kebutuhan ibu dan bayi.'},
+  /* ==================== KEUANGAN (20) ==================== */
+  {id:'dana', name:'DANA', dev:'DANA Indonesia', cat:'Keuangan', icon:'💳', color:'#118EEA', pkg:'id.dana', desc:'Dompet digital untuk pembayaran dan transfer.'},
+  {id:'ovo', name:'OVO', dev:'Visionet Indotama', cat:'Keuangan', icon:'🟣', color:'#4C3494', pkg:'id.co.ovo', desc:'Dompet digital untuk pembayaran merchant.'},
+  {id:'brimo', name:'BRImo', dev:'Bank BRI', cat:'Keuangan', icon:'🏦', color:'#00529C', pkg:'id.co.bri.brimo', desc:'Mobile banking Bank BRI.'},
+  {id:'livin', name:"Livin' by Mandiri", dev:'Bank Mandiri', cat:'Keuangan', icon:'💙', color:'#003D79', pkg:'id.bmri.livin', desc:'Mobile banking Bank Mandiri.'},
+  {id:'bca', name:'BCA mobile', dev:'Bank BCA', cat:'Keuangan', icon:'🏧', color:'#0060AF', pkg:'com.bca', desc:'Mobile banking Bank Central Asia.'},
+  {id:'bibit', name:'Bibit', dev:'Bibit', cat:'Keuangan', icon:'📈', color:'#00B2A9', pkg:'com.bibit', desc:'Aplikasi investasi reksa dana.'},
+  {id:'linkaja', name:'LinkAja', dev:'LinkAja', cat:'Keuangan', icon:'🔴', color:'#E82529', pkg:'com.telkomsel.linkaja', desc:'Dompet digital untuk pembayaran dan pulsa.'},
+  {id:'gopay', name:'GoPay', dev:'Gojek', cat:'Keuangan', icon:'💚', color:'#00AA13', pkg:'', desc:'Dompet digital dari ekosistem Gojek.'},
+  {id:'shopeepay', name:'ShopeePay', dev:'Shopee', cat:'Keuangan', icon:'🧡', color:'#EE4D2D', pkg:'', desc:'Dompet digital dari Shopee.'},
+  {id:'flip', name:'Flip', dev:'Flip', cat:'Keuangan', icon:'💸', color:'#FF6B00', pkg:'com.flip.id', desc:'Transfer antar bank tanpa biaya admin.'},
+  {id:'jenius', name:'Jenius', dev:'BTPN', cat:'Keuangan', icon:'💙', color:'#00AAE7', pkg:'com.btpn.dc', desc:'Bank digital dari BTPN.'},
+  {id:'seabank', name:'SeaBank', dev:'SeaBank', cat:'Keuangan', icon:'🟠', color:'#FF5722', pkg:'com.seabank.mobile', desc:'Bank digital dari Shopee/Sea Group.'},
+  {id:'ajaib', name:'Ajaib', dev:'Ajaib', cat:'Keuangan', icon:'📈', color:'#00C853', pkg:'com.ajaib', desc:'Investasi saham dan reksa dana.'},
+  {id:'stockbit', name:'Stockbit', dev:'Stockbit', cat:'Keuangan', icon:'📊', color:'#1E88E5', pkg:'com.stockbit.android', desc:'Komunitas dan analisis saham Indonesia.'},
+  {id:'pluang', name:'Pluang', dev:'Pluang', cat:'Keuangan', icon:'📈', color:'#6C5CE7', pkg:'com.pluang.android', desc:'Investasi emas, saham, dan kripto.'},
+  {id:'indodax', name:'Indodax', dev:'Indodax', cat:'Keuangan', icon:'₿', color:'#00A8E1', pkg:'com.indodax.android', desc:'Bursa kripto terbesar di Indonesia.'},
+  {id:'cimb', name:'CIMB Niaga', dev:'CIMB Niaga', cat:'Keuangan', icon:'🔴', color:'#B71C1C', pkg:'id.co.cimbniaga.mobile.android', desc:'Mobile banking CIMB Niaga.'},
+  {id:'permatamobile', name:'PermataMobile X', dev:'PermataBank', cat:'Keuangan', icon:'🟢', color:'#007A33', pkg:'com.permatabank.pmb', desc:'Mobile banking PermataBank.'},
+  {id:'bankjago', name:'Bank Jago', dev:'Bank Jago', cat:'Keuangan', icon:'🟠', color:'#F57C00', pkg:'', desc:'Bank digital dari Bank Jago.'},
+  {id:'blu', name:'blu by BCA Digital', dev:'BCA Digital', cat:'Keuangan', icon:'💙', color:'#005BAA', pkg:'', desc:'Bank digital dari BCA.'},
 
-/* ==================== PERJALANAN (15) ==================== */
-{id:'gojek', name:'Gojek', dev:'Gojek', cat:'Perjalanan', icon:'🟢', color:'#00AA13', pkg:'com.gojek.app', featured:true, tagline:'Transportasi, makanan, dan pembayaran', video:'https://www.youtube.com/watch?v=-6gRSEj1PkA', desc:'Super app transportasi dan pesan antar.'},
-{id:'grab', name:'Grab', dev:'Grab', cat:'Perjalanan', icon:'🚗', color:'#00B14F', pkg:'com.grabtaxi.passenger', desc:'Transportasi dan pesan antar makanan.'},
-{id:'traveloka', name:'Traveloka', dev:'Traveloka', cat:'Perjalanan', icon:'✈️', color:'#0770E3', pkg:'com.traveloka.android', desc:'Pesan tiket pesawat, hotel, dan kereta.'},
-{id:'agoda', name:'Agoda', dev:'Agoda', cat:'Perjalanan', icon:'🏨', color:'#5392F9', pkg:'com.agoda.mobile.consumer', desc:'Pesan hotel dan akomodasi dengan harga terbaik.'},
-{id:'booking', name:'Booking.com', dev:'Booking.com', cat:'Perjalanan', icon:'🏨', color:'#003580', pkg:'com.booking', desc:'Pesan hotel, villa, dan penerbangan.'},
-{id:'airbnb', name:'Airbnb', dev:'Airbnb', cat:'Perjalanan', icon:'🏡', color:'#FF5A5F', pkg:'com.airbnb.android', desc:'Sewa penginapan dan pengalaman lokal.'},
-{id:'tiket', name:'Tiket.com', dev:'Tiket.com', cat:'Perjalanan', icon:'✈️', color:'#003DA5', pkg:'com.tiket.gits', desc:'Pesan tiket pesawat, hotel, dan acara.'},
-{id:'pegipegi', name:'Pegipegi', dev:'Pegipegi', cat:'Perjalanan', icon:'✈️', color:'#F9A825', pkg:'com.pegipegi.activities', desc:'Booking hotel dan tiket perjalanan.'},
-{id:'kai', name:'KAI Access', dev:'KAI', cat:'Perjalanan', icon:'🚂', color:'#F37021', pkg:'com.kai.kaiticketing', desc:'Pesan tiket kereta api Indonesia.'},
-{id:'gmaps', name:'Google Maps', dev:'Google LLC', cat:'Perjalanan', icon:'🗺️', color:'#4285F4', pkg:'com.google.android.apps.maps', desc:'Peta dan navigasi dari Google.'},
-{id:'waze', name:'Waze', dev:'Google LLC', cat:'Perjalanan', icon:'🚗', color:'#00D8FF', pkg:'com.waze', desc:'Navigasi berbasis komunitas.'},
-{id:'maxim', name:'Maxim', dev:'Maxim', cat:'Perjalanan', icon:'🚕', color:'#FBBF24', pkg:'com.taxsee.taxsee', desc:'Transportasi online dengan tarif bersaing.'},
-{id:'indrive', name:'inDrive', dev:'inDrive', cat:'Perjalanan', icon:'🚗', color:'#00C853', pkg:'com.indrive', desc:'Transportasi online dengan negosiasi tarif.'},
-{id:'bluebird', name:'Blue Bird', dev:'Blue Bird', cat:'Perjalanan', icon:'🚙', color:'#1565C0', pkg:'com.bluebirdgroup.taxiapp', desc:'Taksi resmi Blue Bird via aplikasi.'},
-{id:'transjakarta', name:'TransJakarta', dev:'Pemprov DKI', cat:'Perjalanan', icon:'🚌', color:'#FF5722', pkg:'', desc:'Info dan rute TransJakarta.'},
+  /* ==================== BELANJA (20) ==================== */
+  {id:'tokopedia', name:'Tokopedia', dev:'Tokopedia', cat:'Belanja', icon:'🛍️', color:'#42B549', pkg:'com.tokopedia.tkpd', featured:true, tagline:'Belanja dari penjual seluruh Indonesia', video:'https://www.youtube.com/watch?v=8o5gZEKhfaE', desc:'Marketplace Indonesia untuk belanja produk.'},
+  {id:'shopee', name:'Shopee', dev:'Shopee', cat:'Belanja', icon:'🛒', color:'#EE4D2D', pkg:'com.shopee.id', desc:'Platform belanja daring dengan promo.'},
+  {id:'lazada', name:'Lazada', dev:'Lazada Group', cat:'Belanja', icon:'📦', color:'#0F146D', pkg:'com.lazada.android', desc:'Marketplace untuk belanja elektronik dan fashion.'},
+  {id:'bukalapak', name:'Bukalapak', dev:'Bukalapak', cat:'Belanja', icon:'🛒', color:'#E31E52', pkg:'com.bukalapak.android', desc:'Marketplace Indonesia untuk berbagai produk.'},
+  {id:'blibli', name:'Blibli', dev:'Blibli', cat:'Belanja', icon:'🛍️', color:'#0095DA', pkg:'com.blibli.oss', desc:'Marketplace dengan garansi resmi.'},
+  {id:'zalora', name:'ZALORA', dev:'ZALORA', cat:'Belanja', icon:'👗', color:'#FF5722', pkg:'com.zalora.android', desc:'Belanja fashion dan gaya hidup.'},
+  {id:'sociolla', name:'Sociolla', dev:'Sociolla', cat:'Belanja', icon:'💄', color:'#FF6F91', pkg:'com.sociolla.sociolla', desc:'Belanja produk kecantikan resmi.'},
+  {id:'alfacart', name:'Alfacart', dev:'Alfacart', cat:'Belanja', icon:'🛒', color:'#E53935', pkg:'com.alfacart.alfacart', desc:'Belanja kebutuhan harian dari Alfamart.'},
+  {id:'bhinneka', name:'Bhinneka', dev:'Bhinneka', cat:'Belanja', icon:'💻', color:'#1E88E5', pkg:'com.bhinneka.android', desc:'Toko elektronik dan gadget resmi.'},
+  {id:'ikea', name:'IKEA', dev:'IKEA', cat:'Belanja', icon:'🪑', color:'#0058A3', pkg:'com.ingka.ikea.app', desc:'Belanja furnitur dari IKEA.'},
+  {id:'uniqlo', name:'UNIQLO', dev:'Fast Retailing', cat:'Belanja', icon:'👕', color:'#E60012', pkg:'com.fastretailing.android.uniqlo', desc:'Belanja pakaian dari UNIQLO.'},
+  {id:'hm', name:'H&M', dev:'H&M', cat:'Belanja', icon:'👗', color:'#E50010', pkg:'com.hm.alm', desc:'Fashion dari H&M resmi.'},
+  {id:'nike', name:'Nike', dev:'Nike', cat:'Belanja', icon:'👟', color:'#111111', pkg:'com.nike.omega', desc:'Belanja sepatu dan apparel Nike.'},
+  {id:'adidas', name:'adidas', dev:'adidas', cat:'Belanja', icon:'👟', color:'#000000', pkg:'com.adidas.confirmed.app', desc:'Belanja produk adidas resmi.'},
+  {id:'sephora', name:'Sephora', dev:'Sephora', cat:'Belanja', icon:'💄', color:'#000000', pkg:'com.sephora', desc:'Belanja kosmetik dan skincare.'},
+  {id:'watsons', name:'Watsons', dev:'Watsons', cat:'Belanja', icon:'💊', color:'#00A0E9', pkg:'com.aswatson.watsonsid', desc:'Belanja obat dan kebutuhan kesehatan.'},
+  {id:'erafone', name:'Erafone', dev:'Erafone', cat:'Belanja', icon:'📱', color:'#E53935', pkg:'com.erafone.android', desc:'Toko gadget dan elektronik resmi.'},
+  {id:'mapemall', name:'Matahari', dev:'Matahari', cat:'Belanja', icon:'👔', color:'#E53935', pkg:'com.matahari.android', desc:'Belanja fashion dari Matahari.'},
+  {id:'jd', name:'JD.ID', dev:'JD', cat:'Belanja', icon:'🛍️', color:'#E1251B', pkg:'com.jd.jdandroid', desc:'Marketplace dari JD.com Indonesia.'},
+  {id:'orami', name:'Orami', dev:'Orami', cat:'Belanja', icon:'👶', color:'#FF7A00', pkg:'', desc:'Belanja kebutuhan ibu dan bayi.'},
 
-/* ==================== FOTOGRAFI (15) ==================== */
-{id:'capcut', name:'CapCut', dev:'Bytedance', cat:'Fotografi', icon:'✂️', color:'#1f2937', pkg:'com.lemon.lvoverseas', desc:'Editor video dengan efek dan template.'},
-{id:'canva', name:'Canva', dev:'Canva', cat:'Fotografi', icon:'🎨', color:'#00C4CC', pkg:'com.canva.editor', desc:'Desain grafis mudah untuk semua orang.'},
-{id:'snapseed', name:'Snapseed', dev:'Google LLC', cat:'Fotografi', icon:'🖼️', color:'#34A853', pkg:'com.niksoftware.snapseed', desc:'Editor foto profesional dari Google.'},
-{id:'picsart', name:'Picsart', dev:'PicsArt', cat:'Fotografi', icon:'🪄', color:'#C209C1', pkg:'com.picsart.studio', desc:'Editor foto dan video dengan alat kreatif.'},
-{id:'lightroom', name:'Lightroom', dev:'Adobe', cat:'Fotografi', icon:'🌅', color:'#31A8FF', pkg:'com.adobe.lrmobile', desc:'Editor foto profesional dari Adobe.'},
-{id:'psx', name:'Photoshop Express', dev:'Adobe', cat:'Fotografi', icon:'🖌️', color:'#001E36', pkg:'com.adobe.psmobile', desc:'Editor foto ringan dari Adobe.'},
-{id:'vsco', name:'VSCO', dev:'VSCO', cat:'Fotografi', icon:'📷', color:'#000000', pkg:'com.vsco.cam', desc:'Filter foto estetik dan komunitas kreator.'},
-{id:'pixlr', name:'Pixlr', dev:'Pixlr', cat:'Fotografi', icon:'🎨', color:'#2B2B2B', pkg:'com.pixlr.express', desc:'Editor foto online dengan banyak filter.'},
-{id:'inshot', name:'InShot', dev:'InShot', cat:'Fotografi', icon:'✂️', color:'#FF3D00', pkg:'com.camerasideas.instashot', desc:'Editor video dengan musik dan efek.'},
-{id:'vivavideo', name:'VivaVideo', dev:'QuVideo', cat:'Fotografi', icon:'🎬', color:'#FFC107', pkg:'com.quvideo.xiaoying', desc:'Editor video lengkap untuk pemula.'},
-{id:'kinemaster', name:'KineMaster', dev:'KineMaster', cat:'Fotografi', icon:'🎥', color:'#1DE9B6', pkg:'com.nexstreaming.app.kinemasterfree', desc:'Editor video multi-layer.'},
-{id:'powerdirector', name:'PowerDirector', dev:'CyberLink', cat:'Fotografi', icon:'🎬', color:'#0D47A1', pkg:'com.cyberlink.powerdirector.DRA140225_01', desc:'Editor video profesional di ponsel.'},
-{id:'prequel', name:'Prequel', dev:'Prequel', cat:'Fotografi', icon:'✨', color:'#FF1744', pkg:'com.prequel.app', desc:'Filter dan efek foto estetik.'},
-{id:'facetune', name:'Facetune', dev:'Lightricks', cat:'Fotografi', icon:'💆', color:'#FF6F00', pkg:'com.lightricks.facetune', desc:'Retouch foto wajah dan portrait.'},
-{id:'prisma', name:'Prisma', dev:'Prisma Labs', cat:'Fotografi', icon:'🎨', color:'#6A1B9A', pkg:'com.neuralprisma', desc:'Ubah foto jadi karya seni dengan AI.'},
+  /* ==================== PERJALANAN (15) ==================== */
+  {id:'gojek', name:'Gojek', dev:'Gojek', cat:'Perjalanan', icon:'🟢', color:'#00AA13', pkg:'com.gojek.app', featured:true, tagline:'Transportasi, makanan, dan pembayaran', video:'https://www.youtube.com/watch?v=-6gRSEj1PkA', desc:'Super app transportasi dan pesan antar.'},
+  {id:'grab', name:'Grab', dev:'Grab', cat:'Perjalanan', icon:'🚗', color:'#00B14F', pkg:'com.grabtaxi.passenger', desc:'Transportasi dan pesan antar makanan.'},
+  {id:'traveloka', name:'Traveloka', dev:'Traveloka', cat:'Perjalanan', icon:'✈️', color:'#0770E3', pkg:'com.traveloka.android', desc:'Pesan tiket pesawat, hotel, dan kereta.'},
+  {id:'agoda', name:'Agoda', dev:'Agoda', cat:'Perjalanan', icon:'🏨', color:'#5392F9', pkg:'com.agoda.mobile.consumer', desc:'Pesan hotel dan akomodasi dengan harga terbaik.'},
+  {id:'booking', name:'Booking.com', dev:'Booking.com', cat:'Perjalanan', icon:'🏨', color:'#003580', pkg:'com.booking', desc:'Pesan hotel, villa, dan penerbangan.'},
+  {id:'airbnb', name:'Airbnb', dev:'Airbnb', cat:'Perjalanan', icon:'🏡', color:'#FF5A5F', pkg:'com.airbnb.android', desc:'Sewa penginapan dan pengalaman lokal.'},
+  {id:'tiket', name:'Tiket.com', dev:'Tiket.com', cat:'Perjalanan', icon:'✈️', color:'#003DA5', pkg:'com.tiket.gits', desc:'Pesan tiket pesawat, hotel, dan acara.'},
+  {id:'pegipegi', name:'Pegipegi', dev:'Pegipegi', cat:'Perjalanan', icon:'✈️', color:'#F9A825', pkg:'com.pegipegi.activities', desc:'Booking hotel dan tiket perjalanan.'},
+  {id:'kai', name:'KAI Access', dev:'KAI', cat:'Perjalanan', icon:'🚂', color:'#F37021', pkg:'com.kai.kaiticketing', desc:'Pesan tiket kereta api Indonesia.'},
+  {id:'gmaps', name:'Google Maps', dev:'Google LLC', cat:'Perjalanan', icon:'🗺️', color:'#4285F4', pkg:'com.google.android.apps.maps', desc:'Peta dan navigasi dari Google.'},
+  {id:'waze', name:'Waze', dev:'Google LLC', cat:'Perjalanan', icon:'🚗', color:'#00D8FF', pkg:'com.waze', desc:'Navigasi berbasis komunitas.'},
+  {id:'maxim', name:'Maxim', dev:'Maxim', cat:'Perjalanan', icon:'🚕', color:'#FBBF24', pkg:'com.taxsee.taxsee', desc:'Transportasi online dengan tarif bersaing.'},
+  {id:'indrive', name:'inDrive', dev:'inDrive', cat:'Perjalanan', icon:'🚗', color:'#00C853', pkg:'com.indrive', desc:'Transportasi online dengan negosiasi tarif.'},
+  {id:'bluebird', name:'Blue Bird', dev:'Blue Bird', cat:'Perjalanan', icon:'🚙', color:'#1565C0', pkg:'com.bluebirdgroup.taxiapp', desc:'Taksi resmi Blue Bird via aplikasi.'},
+  {id:'transjakarta', name:'TransJakarta', dev:'Pemprov DKI', cat:'Perjalanan', icon:'🚌', color:'#FF5722', pkg:'', desc:'Info dan rute TransJakarta.'},
 
-/* ==================== KESEHATAN (15) ==================== */
-{id:'halodoc', name:'Halodoc', dev:'Halodoc', cat:'Kesehatan', icon:'🩺', color:'#00A5CF', pkg:'com.linkdokter.halodoc.android', desc:'Konsultasi dokter dan beli obat online.'},
-{id:'alodokter', name:'Alodokter', dev:'Alodokter', cat:'Kesehatan', icon:'❤️', color:'#E63946', pkg:'com.alodokter.android', desc:'Konsultasi dokter dan info kesehatan.'},
-{id:'klikdokter', name:'KlikDokter', dev:'KlikDokter', cat:'Kesehatan', icon:'💊', color:'#0288D1', pkg:'com.android.klikdokter', desc:'Konsultasi dokter dan apotek online.'},
-{id:'sehatq', name:'SehatQ', dev:'SehatQ', cat:'Kesehatan', icon:'🏥', color:'#00BFA5', pkg:'com.sehatq.app', desc:'Layanan kesehatan digital terintegrasi.'},
-{id:'strava', name:'Strava', dev:'Strava', cat:'Kesehatan', icon:'🏃', color:'#FC4C02', pkg:'com.strava', desc:'Lacak aktivitas lari dan sepeda.'},
-{id:'gfit', name:'Google Fit', dev:'Google LLC', cat:'Kesehatan', icon:'🏃', color:'#4285F4', pkg:'com.google.android.apps.fitness', desc:'Pelacak aktivitas fisik dari Google.'},
-{id:'shealth', name:'Samsung Health', dev:'Samsung', cat:'Kesehatan', icon:'💚', color:'#1428A0', pkg:'com.sec.android.app.shealth', desc:'Pantau kesehatan dan aktivitas harian.'},
-{id:'mfp', name:'MyFitnessPal', dev:'MyFitnessPal', cat:'Kesehatan', icon:'🥗', color:'#0072CE', pkg:'com.myfitnesspal.android', desc:'Hitung kalori dan lacak nutrisi.'},
-{id:'yazio', name:'Yazio', dev:'YAZIO', cat:'Kesehatan', icon:'🥗', color:'#00C853', pkg:'com.yazio.android', desc:'Diet dan puasa intermiten dengan panduan.'},
-{id:'headspace', name:'Headspace', dev:'Headspace', cat:'Kesehatan', icon:'🧘', color:'#FF6D00', pkg:'com.getsomeheadspace.android', desc:'Meditasi dan mindfulness harian.'},
-{id:'calm', name:'Calm', dev:'Calm.com', cat:'Kesehatan', icon:'🌙', color:'#1565C0', pkg:'com.calm.android', desc:'Meditasi, tidur, dan relaksasi.'},
-{id:'sleepcycle', name:'Sleep Cycle', dev:'Sleep Cycle', cat:'Kesehatan', icon:'😴', color:'#6C63FF', pkg:'com.northcube.sleepcycle', desc:'Pelacak kualitas tidur.'},
-{id:'ntc', name:'Nike Training Club', dev:'Nike', cat:'Kesehatan', icon:'💪', color:'#111111', pkg:'com.nike.ntc', desc:'Latihan kebugaran dari Nike.'},
-{id:'mysugr', name:'mySugr', dev:'Roche', cat:'Kesehatan', icon:'💉', color:'#E53935', pkg:'com.mysugr.android.mysugar', desc:'Bantu kelola diabetes harian.'},
-{id:'lifesum', name:'Lifesum', dev:'Lifesum', cat:'Kesehatan', icon:'🥑', color:'#3CC47C', pkg:'com.sillens.shapeupclub', desc:'Pelacak makanan dan gaya hidup sehat.'},
+  /* ==================== FOTOGRAFI (15) ==================== */
+  {id:'capcut', name:'CapCut', dev:'Bytedance', cat:'Fotografi', icon:'✂️', color:'#1f2937', pkg:'com.lemon.lvoverseas', desc:'Editor video dengan efek dan template.'},
+  {id:'canva', name:'Canva', dev:'Canva', cat:'Fotografi', icon:'🎨', color:'#00C4CC', pkg:'com.canva.editor', desc:'Desain grafis mudah untuk semua orang.'},
+  {id:'snapseed', name:'Snapseed', dev:'Google LLC', cat:'Fotografi', icon:'🖼️', color:'#34A853', pkg:'com.niksoftware.snapseed', desc:'Editor foto profesional dari Google.'},
+  {id:'picsart', name:'Picsart', dev:'PicsArt', cat:'Fotografi', icon:'🪄', color:'#C209C1', pkg:'com.picsart.studio', desc:'Editor foto dan video dengan alat kreatif.'},
+  {id:'lightroom', name:'Lightroom', dev:'Adobe', cat:'Fotografi', icon:'🌅', color:'#31A8FF', pkg:'com.adobe.lrmobile', desc:'Editor foto profesional dari Adobe.'},
+  {id:'psx', name:'Photoshop Express', dev:'Adobe', cat:'Fotografi', icon:'🖌️', color:'#001E36', pkg:'com.adobe.psmobile', desc:'Editor foto ringan dari Adobe.'},
+  {id:'vsco', name:'VSCO', dev:'VSCO', cat:'Fotografi', icon:'📷', color:'#000000', pkg:'com.vsco.cam', desc:'Filter foto estetik dan komunitas kreator.'},
+  {id:'pixlr', name:'Pixlr', dev:'Pixlr', cat:'Fotografi', icon:'🎨', color:'#2B2B2B', pkg:'com.pixlr.express', desc:'Editor foto online dengan banyak filter.'},
+  {id:'inshot', name:'InShot', dev:'InShot', cat:'Fotografi', icon:'✂️', color:'#FF3D00', pkg:'com.camerasideas.instashot', desc:'Editor video dengan musik dan efek.'},
+  {id:'vivavideo', name:'VivaVideo', dev:'QuVideo', cat:'Fotografi', icon:'🎬', color:'#FFC107', pkg:'com.quvideo.xiaoying', desc:'Editor video lengkap untuk pemula.'},
+  {id:'kinemaster', name:'KineMaster', dev:'KineMaster', cat:'Fotografi', icon:'🎥', color:'#1DE9B6', pkg:'com.nexstreaming.app.kinemasterfree', desc:'Editor video multi-layer.'},
+  {id:'powerdirector', name:'PowerDirector', dev:'CyberLink', cat:'Fotografi', icon:'🎬', color:'#0D47A1', pkg:'com.cyberlink.powerdirector.DRA140225_01', desc:'Editor video profesional di ponsel.'},
+  {id:'prequel', name:'Prequel', dev:'Prequel', cat:'Fotografi', icon:'✨', color:'#FF1744', pkg:'com.prequel.app', desc:'Filter dan efek foto estetik.'},
+  {id:'facetune', name:'Facetune', dev:'Lightricks', cat:'Fotografi', icon:'💆', color:'#FF6F00', pkg:'com.lightricks.facetune', desc:'Retouch foto wajah dan portrait.'},
+  {id:'prisma', name:'Prisma', dev:'Prisma Labs', cat:'Fotografi', icon:'🎨', color:'#6A1B9A', pkg:'com.neuralprisma', desc:'Ubah foto jadi karya seni dengan AI.'},
 
-/* ==================== BERITA (15) ==================== */
-{id:'kompas', name:'Kompas.com', dev:'Kompas', cat:'Berita', icon:'📰', color:'#1B4A9C', pkg:'com.kompas.android', desc:'Berita dari Kompas.com.'},
-{id:'detik', name:'detikcom', dev:'detikcom', cat:'Berita', icon:'📰', color:'#E53935', pkg:'com.detik.news', desc:'Berita terkini dari detikcom.'},
-{id:'cnnindonesia', name:'CNN Indonesia', dev:'Trans Media', cat:'Berita', icon:'📺', color:'#B71C1C', pkg:'com.cnn.indonesia', desc:'Berita nasional dan internasional.'},
-{id:'tempo', name:'Tempo', dev:'Tempo', cat:'Berita', icon:'📰', color:'#C62828', pkg:'com.tempo.news', desc:'Berita mendalam dari majalah Tempo.'},
-{id:'tribun', name:'Tribunnews', dev:'Tribun Network', cat:'Berita', icon:'📰', color:'#1E88E5', pkg:'com.tribunnews', desc:'Berita dari jaringan Tribunnews.'},
-{id:'liputan6', name:'Liputan6', dev:'SCTV', cat:'Berita', icon:'📰', color:'#FF6F00', pkg:'com.liputan6.android', desc:'Berita dari Liputan6.com.'},
-{id:'kumparan', name:'kumparan', dev:'kumparan', cat:'Berita', icon:'📰', color:'#00BFA5', pkg:'com.kumparan.android', desc:'Platform berita dari jurnalis dan warga.'},
-{id:'tirto', name:'Tirto.id', dev:'Tirto', cat:'Berita', icon:'📰', color:'#212121', pkg:'com.tirto.android', desc:'Jurnalisme mendalam dari Tirto.id.'},
-{id:'antara', name:'ANTARA', dev:'LKBN Antara', cat:'Berita', icon:'📰', color:'#D32F2F', pkg:'com.antara.news', desc:'Kantor berita resmi Indonesia.'},
-{id:'bbc', name:'BBC News', dev:'BBC', cat:'Berita', icon:'📰', color:'#BB1919', pkg:'bbc.mobile.news.ww', desc:'Berita internasional dari BBC.'},
-{id:'cnbc', name:'CNBC Indonesia', dev:'Trans Media', cat:'Berita', icon:'💹', color:'#0D47A1', pkg:'', desc:'Berita ekonomi dan bisnis Indonesia.'},
-{id:'bisnis', name:'Bisnis.com', dev:'Bisnis Indonesia', cat:'Berita', icon:'📰', color:'#1976D2', pkg:'', desc:'Berita bisnis dan keuangan.'},
-{id:'republika', name:'Republika', dev:'Republika', cat:'Berita', icon:'📰', color:'#F57C00', pkg:'', desc:'Berita dari Republika Online.'},
-{id:'medcom', name:'Medcom.id', dev:'Media Group', cat:'Berita', icon:'📰', color:'#C62828', pkg:'', desc:'Berita dari Media Group.'},
-{id:'suara', name:'Suara.com', dev:'Suara', cat:'Berita', icon:'📰', color:'#D32F2F', pkg:'', desc:'Portal berita Suara.com.'},
+  /* ==================== KESEHATAN (15) ==================== */
+  {id:'halodoc', name:'Halodoc', dev:'Halodoc', cat:'Kesehatan', icon:'🩺', color:'#00A5CF', pkg:'com.linkdokter.halodoc.android', desc:'Konsultasi dokter dan beli obat online.'},
+  {id:'alodokter', name:'Alodokter', dev:'Alodokter', cat:'Kesehatan', icon:'❤️', color:'#E63946', pkg:'com.alodokter.android', desc:'Konsultasi dokter dan info kesehatan.'},
+  {id:'klikdokter', name:'KlikDokter', dev:'KlikDokter', cat:'Kesehatan', icon:'💊', color:'#0288D1', pkg:'com.android.klikdokter', desc:'Konsultasi dokter dan apotek online.'},
+  {id:'sehatq', name:'SehatQ', dev:'SehatQ', cat:'Kesehatan', icon:'🏥', color:'#00BFA5', pkg:'com.sehatq.app', desc:'Layanan kesehatan digital terintegrasi.'},
+  {id:'strava', name:'Strava', dev:'Strava', cat:'Kesehatan', icon:'🏃', color:'#FC4C02', pkg:'com.strava', desc:'Lacak aktivitas lari dan sepeda.'},
+  {id:'gfit', name:'Google Fit', dev:'Google LLC', cat:'Kesehatan', icon:'🏃', color:'#4285F4', pkg:'com.google.android.apps.fitness', desc:'Pelacak aktivitas fisik dari Google.'},
+  {id:'shealth', name:'Samsung Health', dev:'Samsung', cat:'Kesehatan', icon:'💚', color:'#1428A0', pkg:'com.sec.android.app.shealth', desc:'Pantau kesehatan dan aktivitas harian.'},
+  {id:'mfp', name:'MyFitnessPal', dev:'MyFitnessPal', cat:'Kesehatan', icon:'🥗', color:'#0072CE', pkg:'com.myfitnesspal.android', desc:'Hitung kalori dan lacak nutrisi.'},
+  {id:'yazio', name:'Yazio', dev:'YAZIO', cat:'Kesehatan', icon:'🥗', color:'#00C853', pkg:'com.yazio.android', desc:'Diet dan puasa intermiten dengan panduan.'},
+  {id:'headspace', name:'Headspace', dev:'Headspace', cat:'Kesehatan', icon:'🧘', color:'#FF6D00', pkg:'com.getsomeheadspace.android', desc:'Meditasi dan mindfulness harian.'},
+  {id:'calm', name:'Calm', dev:'Calm.com', cat:'Kesehatan', icon:'🌙', color:'#1565C0', pkg:'com.calm.android', desc:'Meditasi, tidur, dan relaksasi.'},
+  {id:'sleepcycle', name:'Sleep Cycle', dev:'Sleep Cycle', cat:'Kesehatan', icon:'😴', color:'#6C63FF', pkg:'com.northcube.sleepcycle', desc:'Pelacak kualitas tidur.'},
+  {id:'ntc', name:'Nike Training Club', dev:'Nike', cat:'Kesehatan', icon:'💪', color:'#111111', pkg:'com.nike.ntc', desc:'Latihan kebugaran dari Nike.'},
+  {id:'mysugr', name:'mySugr', dev:'Roche', cat:'Kesehatan', icon:'💉', color:'#E53935', pkg:'com.mysugr.android.mysugar', desc:'Bantu kelola diabetes harian.'},
+  {id:'lifesum', name:'Lifesum', dev:'Lifesum', cat:'Kesehatan', icon:'🥑', color:'#3CC47C', pkg:'com.sillens.shapeupclub', desc:'Pelacak makanan dan gaya hidup sehat.'},
 
-/* ==================== MAKANAN (15) ==================== */
-{id:'foodpanda', name:'foodpanda', dev:'Delivery Hero', cat:'Makanan', icon:'🐼', color:'#D70F64', pkg:'com.global.foodpanda.android', desc:'Pesan antar makanan dari restoran.'},
-{id:'cookpad', name:'Cookpad', dev:'Cookpad', cat:'Makanan', icon:'🍳', color:'#FF6D00', pkg:'com.cookpad.android', desc:'Resep masakan dari komunitas dunia.'},
-{id:'tasty', name:'Tasty', dev:'BuzzFeed', cat:'Makanan', icon:'🍔', color:'#EA3B28', pkg:'com.buzzfeed.tasty', desc:'Resep video yang mudah diikuti.'},
-{id:'yummly', name:'Yummly', dev:'Yummly', cat:'Makanan', icon:'🍴', color:'#FF6A00', pkg:'com.yummly.android', desc:'Resep personal sesuai selera.'},
-{id:'kitchen', name:'Kitchen Stories', dev:'Kitchen Stories', cat:'Makanan', icon:'👨‍🍳', color:'#00B5AD', pkg:'com.kitchenstories.kitchenstories', desc:'Resep dengan panduan video.'},
-{id:'sidechef', name:'SideChef', dev:'SideChef', cat:'Makanan', icon:'🍽️', color:'#FF6B00', pkg:'com.sidechef.sidechef', desc:'Resep pintar dengan panduan langkah.'},
-{id:'bbcgoodfood', name:'BBC Good Food', dev:'Immediate Media', cat:'Makanan', icon:'🍲', color:'#BC0B0E', pkg:'com.immediate.bbcgf', desc:'Resep dari majalah BBC Good Food.'},
-{id:'allrecipes', name:'Allrecipes', dev:'Meredith', cat:'Makanan', icon:'🥘', color:'#E85D2C', pkg:'com.allrecipes.android', desc:'Kumpulan resep dari komunitas besar.'},
-{id:'paprika', name:'Paprika', dev:'Hindsight Labs', cat:'Makanan', icon:'📖', color:'#4CAF50', pkg:'com.hindsightlabs.paprika.android', desc:'Kelola resep dan daftar belanja.'},
-{id:'mealime', name:'Mealime', dev:'Mealime', cat:'Makanan', icon:'🥗', color:'#5CB85C', pkg:'com.mealime', desc:'Rencana makan mingguan otomatis.'},
-{id:'resepedia', name:'Resepedia', dev:'Resepedia', cat:'Makanan', icon:'🍲', color:'#E53935', pkg:'', desc:'Kumpulan resep masakan Indonesia.'},
-{id:'masakapa', name:'Masak Apa?', dev:'Masak Apa', cat:'Makanan', icon:'👩‍🍳', color:'#FF8F00', pkg:'', desc:'Resep Indonesia dengan panduan praktis.'},
-{id:'kulineria', name:'Kulineria', dev:'Kulineria', cat:'Makanan', icon:'🍜', color:'#FF5722', pkg:'', desc:'Resep rumahan Indonesia praktis.'},
-{id:'sajiansedap', name:'Sajian Sedap', dev:'Grid Network', cat:'Makanan', icon:'🍱', color:'#C62828', pkg:'', desc:'Resep dari majalah Sajian Sedap.'}, 
+  /* ==================== BERITA (15) ==================== */
+  {id:'kompas', name:'Kompas.com', dev:'Kompas', cat:'Berita', icon:'📰', color:'#1B4A9C', pkg:'com.kompas.android', desc:'Berita dari Kompas.com.'},
+  {id:'detik', name:'detikcom', dev:'detikcom', cat:'Berita', icon:'📰', color:'#E53935', pkg:'com.detik.news', desc:'Berita terkini dari detikcom.'},
+  {id:'cnnindonesia', name:'CNN Indonesia', dev:'Trans Media', cat:'Berita', icon:'📺', color:'#B71C1C', pkg:'com.cnn.indonesia', desc:'Berita nasional dan internasional.'},
+  {id:'tempo', name:'Tempo', dev:'Tempo', cat:'Berita', icon:'📰', color:'#C62828', pkg:'com.tempo.news', desc:'Berita mendalam dari majalah Tempo.'},
+  {id:'tribun', name:'Tribunnews', dev:'Tribun Network', cat:'Berita', icon:'📰', color:'#1E88E5', pkg:'com.tribunnews', desc:'Berita dari jaringan Tribunnews.'},
+  {id:'liputan6', name:'Liputan6', dev:'SCTV', cat:'Berita', icon:'📰', color:'#FF6F00', pkg:'com.liputan6.android', desc:'Berita dari Liputan6.com.'},
+  {id:'kumparan', name:'kumparan', dev:'kumparan', cat:'Berita', icon:'📰', color:'#00BFA5', pkg:'com.kumparan.android', desc:'Platform berita dari jurnalis dan warga.'},
+  {id:'tirto', name:'Tirto.id', dev:'Tirto', cat:'Berita', icon:'📰', color:'#212121', pkg:'com.tirto.android', desc:'Jurnalisme mendalam dari Tirto.id.'},
+  {id:'antara', name:'ANTARA', dev:'LKBN Antara', cat:'Berita', icon:'📰', color:'#D32F2F', pkg:'com.antara.news', desc:'Kantor berita resmi Indonesia.'},
+  {id:'bbc', name:'BBC News', dev:'BBC', cat:'Berita', icon:'📰', color:'#BB1919', pkg:'bbc.mobile.news.ww', desc:'Berita internasional dari BBC.'},
+  {id:'cnbc', name:'CNBC Indonesia', dev:'Trans Media', cat:'Berita', icon:'💹', color:'#0D47A1', pkg:'', desc:'Berita ekonomi dan bisnis Indonesia.'},
+  {id:'bisnis', name:'Bisnis.com', dev:'Bisnis Indonesia', cat:'Berita', icon:'📰', color:'#1976D2', pkg:'', desc:'Berita bisnis dan keuangan.'},
+  {id:'republika', name:'Republika', dev:'Republika', cat:'Berita', icon:'📰', color:'#F57C00', pkg:'', desc:'Berita dari Republika Online.'},
+  {id:'medcom', name:'Medcom.id', dev:'Media Group', cat:'Berita', icon:'📰', color:'#C62828', pkg:'', desc:'Berita dari Media Group.'},
+  {id:'suara', name:'Suara.com', dev:'Suara', cat:'Berita', icon:'📰', color:'#D32F2F', pkg:'', desc:'Portal berita Suara.com.'},
+
+  /* ==================== MAKANAN (15) ==================== */
+  {id:'foodpanda', name:'foodpanda', dev:'Delivery Hero', cat:'Makanan', icon:'🐼', color:'#D70F64', pkg:'com.global.foodpanda.android', desc:'Pesan antar makanan dari restoran.'},
+  {id:'cookpad', name:'Cookpad', dev:'Cookpad', cat:'Makanan', icon:'🍳', color:'#FF6D00', pkg:'com.cookpad.android', desc:'Resep masakan dari komunitas dunia.'},
+  {id:'tasty', name:'Tasty', dev:'BuzzFeed', cat:'Makanan', icon:'🍔', color:'#EA3B28', pkg:'com.buzzfeed.tasty', desc:'Resep video yang mudah diikuti.'},
+  {id:'yummly', name:'Yummly', dev:'Yummly', cat:'Makanan', icon:'🍴', color:'#FF6A00', pkg:'com.yummly.android', desc:'Resep personal sesuai selera.'},
+  {id:'kitchen', name:'Kitchen Stories', dev:'Kitchen Stories', cat:'Makanan', icon:'👨‍🍳', color:'#00B5AD', pkg:'com.kitchenstories.kitchenstories', desc:'Resep dengan panduan video.'},
+  {id:'sidechef', name:'SideChef', dev:'SideChef', cat:'Makanan', icon:'🍽️', color:'#FF6B00', pkg:'com.sidechef.sidechef', desc:'Resep pintar dengan panduan langkah.'},
+  {id:'bbcgoodfood', name:'BBC Good Food', dev:'Immediate Media', cat:'Makanan', icon:'🍲', color:'#BC0B0E', pkg:'com.immediate.bbcgf', desc:'Resep dari majalah BBC Good Food.'},
+  {id:'allrecipes', name:'Allrecipes', dev:'Meredith', cat:'Makanan', icon:'🥘', color:'#E85D2C', pkg:'com.allrecipes.android', desc:'Kumpulan resep dari komunitas besar.'},
+  {id:'paprika', name:'Paprika', dev:'Hindsight Labs', cat:'Makanan', icon:'📖', color:'#4CAF50', pkg:'com.hindsightlabs.paprika.android', desc:'Kelola resep dan daftar belanja.'},
+  {id:'mealime', name:'Mealime', dev:'Mealime', cat:'Makanan', icon:'🥗', color:'#5CB85C', pkg:'com.mealime', desc:'Rencana makan mingguan otomatis.'},
+  {id:'resepedia', name:'Resepedia', dev:'Resepedia', cat:'Makanan', icon:'🍲', color:'#E53935', pkg:'', desc:'Kumpulan resep masakan Indonesia.'},
+  {id:'masakapa', name:'Masak Apa?', dev:'Masak Apa', cat:'Makanan', icon:'👩‍🍳', color:'#FF8F00', pkg:'', desc:'Resep Indonesia dengan panduan praktis.'},
+  {id:'kulineria', name:'Kulineria', dev:'Kulineria', cat:'Makanan', icon:'🍜', color:'#FF5722', pkg:'', desc:'Resep rumahan Indonesia praktis.'},
+  {id:'sajiansedap', name:'Sajian Sedap', dev:'Grid Network', cat:'Makanan', icon:'🍱', color:'#C62828', pkg:'', desc:'Resep dari majalah Sajian Sedap.'},
   {id:'gofood', name:'GoFood', dev:'Gojek', cat:'Makanan', icon:'🍔', color:'#00AA13', pkg:'', desc:'Pesan antar makanan dari Gojek.'}
 ];
 
-/* ============================================================
-   META KATEGORI
-   ============================================================ */
 const CAT_META = [
   {cat:'Semua',        emoji:'🌟'},
   {cat:'Game',         emoji:'🎮'},
@@ -291,15 +289,12 @@ const CAT_META = [
   {cat:'Favorit',      emoji:'⭐'}
 ];
 
-/* ============================================================
-   LOGIKA MISI HARIAN
-   ============================================================ */
 const MISSIONS = [
-  { id: 'open_detail', icon: '👀', name: 'Jelajah Aplikasi', desc: 'Buka detail 3 aplikasi', goal: 3, reward: 15 },
-  { id: 'save_fav', icon: '⭐', name: 'Kolektor Favorit', desc: 'Simpan 2 aplikasi ke favorit', goal: 2, reward: 20 },
-  { id: 'switch_theme', icon: '🌙', name: 'Ganti Suasana', desc: 'Coba mode gelap / terang', goal: 1, reward: 10 },
-  { id: 'watch_video', icon: '🎬', name: 'Nonton Video Sponsor', desc: 'Buka video aplikasi unggulan', goal: 1, reward: 15 },
-  { id: 'browse_cat', icon: '🗂️', name: 'Penjelajah Kategori', desc: 'Kunjungi 3 kategori berbeda', goal: 3, reward: 20 }
+  { id: 'open_detail', icon: '👀', name: 'Jelajah Aplikasi',      desc: 'Buka detail 3 aplikasi',                goal: 3,  reward: 15 },
+  { id: 'save_fav',    icon: '⭐', name: 'Kolektor Favorit',       desc: 'Simpan 2 aplikasi ke favorit',          goal: 2,  reward: 20 },
+  { id: 'download_10', icon: '⬇️', name: 'Download 10 Aplikasi',   desc: 'Unduh 10 aplikasi di Play Store',       goal: 10, reward: 50 },
+  { id: 'watch_video', icon: '🎬', name: 'Nonton Video Sponsor',   desc: 'Buka video aplikasi unggulan',          goal: 1,  reward: 15 },
+  { id: 'browse_cat',  icon: '🗂️', name: 'Penjelajah Kategori',    desc: 'Kunjungi 3 kategori berbeda',           goal: 3,  reward: 20 }
 ];
 
 const MISSION_STORE_KEY = 'appnesia:missions';
@@ -315,6 +310,7 @@ function freshMissionState(date, keepPoints = 0){
     claimed:  MISSIONS.reduce((acc,m)=>{ acc[m.id]=false; return acc; }, {}),
     seenCats: [],
     seenApps: [],
+    downloadedApps: [],
     points: keepPoints
   };
 }
@@ -332,6 +328,7 @@ function loadMissionState(){
     });
     if(!Array.isArray(parsed.seenCats)) parsed.seenCats = [];
     if(!Array.isArray(parsed.seenApps)) parsed.seenApps = [];
+    if(!Array.isArray(parsed.downloadedApps)) parsed.downloadedApps = [];
     return parsed;
   }catch(e){
     return freshMissionState(today);
@@ -350,7 +347,7 @@ function isMissionDone(id){
   return m ? missionProgress(id) >= m.goal : false;
 }
 const totalPoints = () => MISSION_STATE.points || 0;
-const doneCount = () => MISSIONS.filter(m => isMissionDone(m.id)).length;
+const doneCount  = () => MISSIONS.filter(m => isMissionDone(m.id)).length;
 
 function addMissionProgress(id, amount = 1){
   const m = MISSIONS.find(x => x.id === id);
@@ -370,4 +367,68 @@ function addMissionProgress(id, amount = 1){
   }
   saveMissionState();
   if(typeof window.renderMissions === 'function') window.renderMissions();
-} 
+}
+
+const SHOP_ITEMS = [
+  { id: 'theme_gold',  name: 'Tema Emas Premium',  icon: '👑', price: 80,  desc: 'Buka akses tema emas eksklusif.' },
+  { id: 'badge_star',  name: 'Badge Bintang',      icon: '🌟', price: 40,  desc: 'Badge bintang di kartu aplikasi favorit.' },
+  { id: 'ad_free',     name: 'Bebas Iklan 1 Hari', icon: '🚫', price: 60,  desc: 'Sembunyikan sponsor selama 24 jam.' },
+  { id: 'double_pts',  name: 'Poin Ganda',         icon: '✨', price: 100, desc: 'Poin misi jadi 2x selama 1 hari.' },
+  { id: 'lucky_dice',  name: 'Dadu Keberuntungan', icon: '🎲', price: 30,  desc: 'Bonus acak 10–50 poin saat dipakai.' },
+  { id: 'vip_crown',   name: 'Mahkota VIP',        icon: '💎', price: 200, desc: 'Mahkota eksklusif di profil pengguna.' }
+];
+
+const SHOP_STORE_KEY = 'appnesia:shop';
+let SHOP_STATE = loadShopState();
+
+function loadShopState(){
+  try {
+    const raw = JSON.parse(localStorage.getItem(SHOP_STORE_KEY) || '{}');
+    return (raw && typeof raw === 'object') ? raw : {};
+  } catch(e){ return {}; }
+}
+
+function saveShopState(){
+  localStorage.setItem(SHOP_STORE_KEY, JSON.stringify(SHOP_STATE));
+}
+
+function buyShopItem(id){
+  const item = SHOP_ITEMS.find(i => i.id === id);
+  if(!item)                          return { ok:false, msg:'❌ Item tidak ditemukan' };
+  if(SHOP_STATE[id])                 return { ok:false, msg:'ℹ️ Item sudah dimiliki' };
+  if((MISSION_STATE.points||0) < item.price) return { ok:false, msg:'❌ Poin tidak cukup' };
+
+  MISSION_STATE.points -= item.price;
+  SHOP_STATE[id] = true;
+
+  if(id === 'lucky_dice'){
+    const bonus = 10 + Math.floor(Math.random() * 41);
+    MISSION_STATE.points += bonus;
+    saveMissionState();
+    saveShopState();
+    return { ok:true, msg:`🎲 Dadu memberi bonus ${bonus} poin!` };
+  }
+
+  saveMissionState();
+  saveShopState();
+  return { ok:true, msg:`✅ Berhasil membeli ${item.name}!` };
+}
+
+if(typeof window !== 'undefined'){
+  window.APPS              = APPS;
+  window.CAT_META          = CAT_META;
+  window.MISSIONS          = MISSIONS;
+  window.SHOP_ITEMS        = SHOP_ITEMS;
+  window.SHOP_STATE        = SHOP_STATE;
+  window.MISSION_STATE     = MISSION_STATE;
+  window.addMissionProgress= addMissionProgress;
+  window.buyShopItem       = buyShopItem;
+  window.saveMissionState  = saveMissionState;
+  window.saveShopState     = saveShopState;
+  window.todayKey          = todayKey;
+  window.loadMissionState  = loadMissionState;
+  window.missionProgress   = missionProgress;
+  window.isMissionDone     = isMissionDone;
+  window.totalPoints       = totalPoints;
+  window.doneCount         = doneCount;
+   }
