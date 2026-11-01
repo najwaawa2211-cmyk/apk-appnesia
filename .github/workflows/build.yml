@@ -27,8 +27,8 @@ jobs:
         run: |
           npm install
           
-          # Install alat pengacak dan pemadat HTML
-          npm install javascript-obfuscator html-minifier-terser
+          # Install semua alat pengacak
+          npm install javascript-obfuscator html-minifier-terser cheerio
 
           # JALANKAN ROBOT ACAK
           node acak.js
