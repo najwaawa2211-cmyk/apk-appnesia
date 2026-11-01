@@ -2,30 +2,31 @@ const fs = require('fs');
 const path = require('path');
 const JavaScriptObfuscator = require('javascript-obfuscator');
 
-// Pastikan folder public ada
-if (!fs.existsSync('public')) fs.mkdirSync('public');
+const TARGET_DIR = 'www'; // Sesuaikan dengan web-dir di workflow kamu
 
-console.log('🛡️ Memulai proses penyamaran kode...');
+console.log('🛡️ Memulai proses Obfuscation...');
 
-// 1. Ambil data.js ASLI, acak, lalu simpan ke public/data.js
+if (!fs.existsSync(TARGET_DIR)) fs.mkdirSync(TARGET_DIR);
+
+// 1. Acak data.js
 try {
     const dataAsli = fs.readFileSync('data.js', 'utf8');
     const dataAcak = JavaScriptObfuscator.obfuscate(dataAsli, {
         compact: true,
+        controlFlowFlattening: true,
         stringArray: true,
         stringArrayEncoding: ['base64'],
         identifierNamesGenerator: 'hexadecimal'
     }).getObfuscatedCode();
     
-    fs.writeFileSync('public/data.js', dataAcak);
-    console.log('✅ File public/data.js berhasil dibuat (Acak Total).');
+    fs.writeFileSync(path.join(TARGET_DIR, 'data.js'), dataAcak);
+    console.log('✅ www/data.js berhasil dibuat (Acak).');
 } catch(e) { console.log('Gagal acak data.js:', e); }
 
-// 2. Ambil index.html ASLI, acak script-nya, simpan ke public/index.html
+// 2. Acak index.html
 try {
     let indexAsli = fs.readFileSync('index.html', 'utf8');
     
-    // Acak semua isi <script>
     const indexAcak = indexAsli.replace(/<script>([\s\S]*?)<\/script>/g, (match, isiScript) => {
         if (isiScript.trim() === '' || isiScript.includes('src=')) return match; 
         
@@ -39,6 +40,6 @@ try {
         return `<script>${acak}</script>`;
     });
 
-    fs.writeFileSync('public/index.html', indexAcak);
-    console.log('✅ File public/index.html berhasil dibuat (Acak Total).');
+    fs.writeFileSync(path.join(TARGET_DIR, 'index.html'), indexAcak);
+    console.log('✅ www/index.html berhasil dibuat (Acak).');
 } catch(e) { console.log('Gagal acak index.html:', e); }
