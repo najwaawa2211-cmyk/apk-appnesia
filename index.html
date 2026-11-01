@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -145,7 +145,7 @@
   .modal-actions .btn.ghost.on{color:var(--accent); box-shadow:inset 0 0 0 1.5px var(--accent)}
   .modal-note{ font-size:11.5px; line-height:1.5; color:var(--muted); margin:14px 0 0; padding-top:14px; border-top:1px solid var(--border); }
 
-  /* MODAL MISI */
+  /* MODAL MISI & TOKO */
   .mission-modal-content .mission-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
   .mission-modal-content .mission-title { font-size: 18px; font-weight: 750; margin: 0; display: flex; align-items: center; gap: 8px; }
   .mission-modal-content .mission-points { margin-left: auto; font-size: 13px; font-weight: 800; background: linear-gradient(140deg, var(--accent), #ffb627); color: #fff; padding: 5px 14px; border-radius: 20px; box-shadow: 0 4px 12px -4px rgba(255,107,53,.5); }
@@ -237,6 +237,7 @@
       </svg>
       <input id="search" type="search" placeholder="Cari aplikasi atau pengembang…" autocomplete="off">
     </div>
+    <button class="icon-btn" id="shopBtn" title="Toko Poin">🛍️</button>
     <button class="icon-btn" id="missionBtn" title="Misi Harian">🎯</button>
     <button class="icon-btn" id="themeBtn" title="Ganti tema">🌙</button>
   </div>
@@ -270,21 +271,17 @@
 
 <div class="backdrop" id="backdrop"><div class="modal" id="modal"></div></div>
 <div class="backdrop" id="missionBackdrop"><div class="modal mission-modal-content" id="missionModal"></div></div>
+<div class="backdrop" id="shopBackdrop"><div class="modal mission-modal-content" id="shopModal"></div></div>
 <div id="toast"></div>
 
-<!-- FILE DATA.JS KAMU -->
 <script src="data.js"></script>
-
-<!-- LOGIKA UTAMA INDEX.HTML -->
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-  // 1. Cek apakah data.js berhasil dimuat
   if (typeof APPS === 'undefined' || typeof CAT_META === 'undefined') {
     document.getElementById('hero').innerHTML = `<div style="text-align:center; padding: 40px; color: white;"><h2>⚠️ Gagal Memuat Data</h2><p>Pastikan file <b>data.js</b> ada di folder yang sama.</p></div>`;
     return;
   }
 
-  // 2. State Aplikasi
   const state = {
     filter: 'Semua',
     query: '',
@@ -302,20 +299,16 @@ window.addEventListener('DOMContentLoaded', () => {
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const DL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
 
-  // 3. Render Misi (Mengambil fungsi & variabel dari data.js)
   function renderMissions() {
     if (typeof MISSIONS === 'undefined' || typeof MISSION_STATE === 'undefined') return;
-    
     const done = doneCount();
     const total = MISSIONS.length;
     const percent = Math.round((done / total) * 100);
 
-    // Update Badge di Header
     const missionBtn = document.getElementById('missionBtn');
     if(missionBtn){
       const oldBadge = missionBtn.querySelector('.badge-dot');
       if(oldBadge) oldBadge.remove();
-      
       const remaining = total - done;
       if(remaining > 0){
         const dot = document.createElement('span');
@@ -325,14 +318,26 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Update Modal Misi
+    const shopBtn = document.getElementById('shopBtn');
+    if(shopBtn){
+      const oldBadge = shopBtn.querySelector('.badge-dot');
+      if(oldBadge) oldBadge.remove();
+      const pts = totalPoints();
+      if(pts > 0){
+        const dot = document.createElement('span');
+        dot.className = 'badge-dot';
+        dot.style.background = 'var(--ok)';
+        dot.textContent = pts > 99 ? '99+' : pts;
+        shopBtn.appendChild(dot);
+      }
+    }
+
     const modalEl = document.getElementById('missionModal');
     if(modalEl){
       const missionItemsHTML = MISSIONS.map(m => {
         const cur = missionProgress(m.id);
         const isDone = cur >= m.goal;
         const pct = Math.round((cur / m.goal) * 100);
-        
         return `
           <div class="mission-item${isDone ? ' done' : ''}">
             <div class="mission-icon">${m.icon}</div>
@@ -345,7 +350,7 @@ window.addEventListener('DOMContentLoaded', () => {
           </div>`;
       }).join('');
 
-            modalEl.innerHTML = `
+      modalEl.innerHTML = `
         <button class="modal-close" data-mission-close aria-label="Tutup">✕</button>
         <div class="mission-head">
           <h2 class="mission-title"><span>🎯</span> Misi Harian</h2>
@@ -364,14 +369,47 @@ window.addEventListener('DOMContentLoaded', () => {
         <div class="mission-list">
           ${missionItemsHTML}
         </div>
+        <p class="modal-note">💡 Tukar poinmu dengan item eksklusif di <b>Toko Poin</b> 🛍️ di pojok kanan atas.</p>
       `;
     }
   }
-
-  // Hubungkan fungsi render ke data.js agar bisa dipanggil
   window.renderMissions = renderMissions;
 
-  // 4. Render Aplikasi
+  function renderShop(){
+    const modalEl = document.getElementById('shopModal');
+    if(!modalEl || typeof SHOP_ITEMS === 'undefined') return;
+    const points = (typeof MISSION_STATE !== 'undefined') ? (MISSION_STATE.points || 0) : 0;
+
+    const itemsHTML = SHOP_ITEMS.map(item => {
+      const owned = !!SHOP_STATE[item.id];
+      const canBuy = !owned && points >= item.price;
+      return `
+        <div class="mission-item${owned ? ' done' : ''}">
+          <div class="mission-icon">${item.icon}</div>
+          <div class="mission-body">
+            <p class="mission-name">${esc(item.name)} ${owned ? '<span style="font-size:10px;opacity:.8">✓</span>' : ''}</p>
+            <p class="mission-desc">${esc(item.desc)}</p>
+          </div>
+          ${owned
+            ? `<span class="mission-check">✓</span>`
+            : `<button class="btn ghost ${canBuy ? 'on' : ''}" style="padding:7px 13px;font-size:11.5px;font-weight:800;border-radius:10px;cursor:${canBuy ? 'pointer' : 'not-allowed'};opacity:${canBuy ? 1 : .45};white-space:nowrap;background:${canBuy ? 'color-mix(in srgb, var(--accent) 14%, transparent)' : 'transparent'};color:${canBuy ? 'var(--accent)' : 'var(--muted)'};border:1.5px solid ${canBuy ? 'var(--accent)' : 'var(--border)'}"
+                 data-buy="${item.id}" ${canBuy ? '' : 'disabled'}>${item.price} poin</button>`
+          }
+        </div>`;
+    }).join('');
+
+    modalEl.innerHTML = `
+      <button class="modal-close" data-shop-close aria-label="Tutup">✕</button>
+      <div class="mission-head">
+        <h2 class="mission-title"><span>🛍️</span> Toko Poin</h2>
+        <span class="mission-points">${points} Poin</span>
+      </div>
+      <p class="mission-sub">Tukar poin dari misi harian dengan item eksklusif. Poin & item dimiliki permanen.</p>
+      <div class="mission-list">${itemsHTML}</div>
+      <p class="modal-note">💡 Dapatkan poin dengan menyelesaikan <b>Misi Harian</b> 🎯. Poin direset bersama misi setiap hari, tapi item yang sudah dibeli tetap dimiliki.</p>
+    `;
+  }
+
   function filteredApps(){
     let list = APPS.slice();
     if(state.filter === 'Favorit') list = list.filter(a => state.favs[a.id]);
@@ -411,7 +449,7 @@ window.addEventListener('DOMContentLoaded', () => {
           <p>${esc(app.tagline || app.desc.slice(0, 90))}</p>
           <div class="hero-meta">${esc(app.dev)} · ${esc(app.cat)}</div>
           <div class="hero-actions">
-            <a class="hero-btn primary" href="${storeUrl(app)}" target="_blank" rel="noopener">Unduh</a>
+            <a class="hero-btn primary" href="${storeUrl(app)}" target="_blank" rel="noopener" data-hero-dl="${app.id}">Unduh</a>
             <button class="hero-btn ghost" data-detail="${app.id}">Info</button>
           </div>
         </div>
@@ -445,7 +483,7 @@ window.addEventListener('DOMContentLoaded', () => {
       <article class="card" data-detail="${app.id}">
         <div class="card-top">
           <div class="app-icon" style="background:${grad(app.color)}">${app.icon}</div>
-          <a class="mini-dl" href="${storeUrl(app)}" target="_blank" rel="noopener noreferrer" aria-label="Unduh ${esc(app.name)}">${DL_ICON}</a>
+          <a class="mini-dl" href="${storeUrl(app)}" target="_blank" rel="noopener noreferrer" data-dl-app="${app.id}" aria-label="Unduh ${esc(app.name)}">${DL_ICON}</a>
         </div>
         <h3 title="${esc(app.name)}">${esc(app.name)}</h3>
         <p class="dev" title="${esc(app.dev)}">${esc(app.dev)}</p>
@@ -494,7 +532,6 @@ window.addEventListener('DOMContentLoaded', () => {
     $('#grid').innerHTML = list.length ? list.map(cardHTML).join('') : emptyHTML();
   }
 
-  // 5. Render Modal Aplikasi
   function renderModal(id){
     const app = findApp(id);
     if(!app) return;
@@ -512,7 +549,7 @@ window.addEventListener('DOMContentLoaded', () => {
       <h4>Tentang aplikasi ini</h4>
       <p class="desc">${esc(app.desc)}</p>
       <div class="modal-actions">
-        <a class="btn install" href="${storeUrl(app)}" target="_blank" rel="noopener noreferrer">Unduh di Google Play</a>
+        <a class="btn install" href="${storeUrl(app)}" target="_blank" rel="noopener noreferrer" data-dl-app="${app.id}">Unduh di Google Play</a>
         <button class="btn ghost ${fav ? 'on' : ''}" data-fav="${app.id}">
           ${fav ? '★ Tersimpan di Favorit' : '☆ Simpan ke Favorit'}
         </button>
@@ -525,7 +562,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if(openId) renderModal(openId);
   }
 
-  // 6. Aksi & Toast
   let toastTimer;
   function toast(msg){
     const el = $('#toast');
@@ -534,8 +570,6 @@ window.addEventListener('DOMContentLoaded', () => {
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
   }
-
-  // Hubungkan fungsi toast ke data.js agar bisa dipanggil
   window.showToast = toast;
 
   function toggleFav(id){
@@ -543,10 +577,10 @@ window.addEventListener('DOMContentLoaded', () => {
     else state.favs[id] = true;
     saveFavs();
 
-    if(typeof MISSION_STATE !== 'undefined'){
+    if(typeof MISSION_STATE !== 'undefined' && typeof MISSIONS !== 'undefined'){
       const favCount = Object.keys(state.favs).length;
       if(favCount > 0){
-        const m = MISSIONS.find(x=>x.id==='save_fav');
+        const m = MISSIONS.find(x => x.id === 'save_fav');
         if(m && !MISSION_STATE.claimed.save_fav){
           MISSION_STATE.progress.save_fav = Math.min(favCount, m.goal);
           saveMissionState();
@@ -559,11 +593,34 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-    
+
     updateUI();
     renderMissions();
     const app = findApp(id);
     if(app) toast(state.favs[id] ? `★ ${app.name} disimpan ke favorit` : `☆ ${app.name} dihapus dari favorit`);
+  }
+
+  function trackDownload(appId){
+    if(typeof MISSION_STATE === 'undefined' || typeof MISSIONS === 'undefined') return;
+    if(!MISSION_STATE.downloadedApps) MISSION_STATE.downloadedApps = [];
+    if(MISSION_STATE.downloadedApps.includes(appId)) return;
+
+    MISSION_STATE.downloadedApps.push(appId);
+    saveMissionState();
+
+    const m = MISSIONS.find(x => x.id === 'download_10');
+    if(!m || MISSION_STATE.claimed.download_10) return;
+
+    MISSION_STATE.progress.download_10 = Math.min(MISSION_STATE.downloadedApps.length, m.goal);
+    saveMissionState();
+
+    if(MISSION_STATE.progress.download_10 >= m.goal && !MISSION_STATE.claimed.download_10){
+      MISSION_STATE.claimed.download_10 = true;
+      MISSION_STATE.points = (MISSION_STATE.points || 0) + m.reward;
+      saveMissionState();
+      toast(`🎉 Misi selesai: ${m.name} +${m.reward} poin!`);
+    }
+    renderMissions();
   }
 
   function openDetail(id){
@@ -572,14 +629,14 @@ window.addEventListener('DOMContentLoaded', () => {
     $('#backdrop').classList.add('show');
     document.body.style.overflow = 'hidden';
 
-    if(typeof MISSION_STATE !== 'undefined'){
+    if(typeof MISSION_STATE !== 'undefined' && typeof MISSIONS !== 'undefined'){
       if(!MISSION_STATE.seenApps) MISSION_STATE.seenApps = [];
       if(!MISSION_STATE.seenApps.includes(id)){
         MISSION_STATE.seenApps.push(id);
         saveMissionState();
       }
       const uniqueCount = MISSION_STATE.seenApps.length;
-      const m = MISSIONS.find(x=>x.id==='open_detail');
+      const m = MISSIONS.find(x => x.id === 'open_detail');
       if(m && !MISSION_STATE.claimed.open_detail){
         MISSION_STATE.progress.open_detail = Math.min(uniqueCount, m.goal);
         saveMissionState();
@@ -605,25 +662,41 @@ window.addEventListener('DOMContentLoaded', () => {
     $('#missionBackdrop').classList.add('show');
     document.body.style.overflow = 'hidden';
   }
-
   function closeMissions(){
     $('#missionBackdrop').classList.remove('show');
     document.body.style.overflow = '';
   }
 
-  // 7. Event Listeners
+  function openShop(){
+    renderShop();
+    $('#shopBackdrop').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeShop(){
+    $('#shopBackdrop').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
   document.addEventListener('click', (e) => {
-    // Tombol Misi
-    if(e.target.closest('#missionBtn')) {
+    if(e.target.closest('#missionBtn')){ e.preventDefault(); openMissions(); return; }
+    if(e.target.closest('#shopBtn')){ e.preventDefault(); openShop(); return; }
+
+    if(e.target.closest('[data-mission-close]') || e.target.id === 'missionBackdrop'){ closeMissions(); return; }
+    if(e.target.closest('[data-shop-close]') || e.target.id === 'shopBackdrop'){ closeShop(); return; }
+
+    const buyEl = e.target.closest('[data-buy]');
+    if(buyEl){
       e.preventDefault();
-      openMissions();
+      const res = buyShopItem(buyEl.dataset.buy);
+      toast(res.msg);
+      renderShop();
+      renderMissions();
       return;
     }
 
-    // Tutup Modal Misi
-    if(e.target.closest('[data-mission-close]') || e.target.id === 'missionBackdrop'){
-      closeMissions();
-      return;
+    const dlEl = e.target.closest('[data-dl-app]');
+    if(dlEl){
+      trackDownload(dlEl.dataset.dlApp);
     }
 
     if(e.target.closest('a[href]')) return;
@@ -639,13 +712,13 @@ window.addEventListener('DOMContentLoaded', () => {
       render();
 
       const cat = catEl.dataset.cat;
-      if(cat !== 'Semua' && cat !== 'Favorit' && typeof MISSION_STATE !== 'undefined'){
+      if(cat !== 'Semua' && cat !== 'Favorit' && typeof MISSION_STATE !== 'undefined' && typeof MISSIONS !== 'undefined'){
         if(!MISSION_STATE.seenCats) MISSION_STATE.seenCats = [];
         if(!MISSION_STATE.seenCats.includes(cat)){
           MISSION_STATE.seenCats.push(cat);
           saveMissionState();
         }
-        const m = MISSIONS.find(x=>x.id==='browse_cat');
+        const m = MISSIONS.find(x => x.id === 'browse_cat');
         if(m && !MISSION_STATE.claimed.browse_cat){
           MISSION_STATE.progress.browse_cat = Math.min(MISSION_STATE.seenCats.length, m.goal);
           saveMissionState();
@@ -663,15 +736,27 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     const detailEl = e.target.closest('[data-detail]');
-    if(detailEl){ openDetail(detailEl.dataset.detail); return; }
+    if(detailEl){
+      if(e.target.closest('[data-hero-dl]')) return;
+      openDetail(detailEl.dataset.detail);
+      return;
+    }
 
     if(e.target.id === 'backdrop') closeDetail();
+  });
+
+  document.addEventListener('click', (e) => {
+    const heroDl = e.target.closest('[data-hero-dl]');
+    if(heroDl){
+      trackDownload(heroDl.dataset.heroDl);
+    }
   });
 
   document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape'){
       if(openId) closeDetail();
       if(document.getElementById('missionBackdrop').classList.contains('show')) closeMissions();
+      if(document.getElementById('shopBackdrop').classList.contains('show')) closeShop();
     }
   });
 
@@ -680,7 +765,6 @@ window.addEventListener('DOMContentLoaded', () => {
     render();
   });
 
-  // 8. Inisialisasi Tema & Jalan
   const savedTheme = localStorage.getItem('appnesia:theme') || 'light';
   document.documentElement.dataset.theme = savedTheme;
   const themeBtn = $('#themeBtn');
@@ -691,14 +775,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.documentElement.dataset.theme = next;
     localStorage.setItem('appnesia:theme', next);
     themeBtn.textContent = next === 'dark' ? '☀️' : '🌙';
-    if(typeof addMissionProgress === 'function') addMissionProgress('switch_theme', 1);
-  });
-
-  document.addEventListener('click', (e) => {
-    const hero = e.target.closest('#hero');
-    if(hero && !e.target.closest('[data-detail]') && !e.target.closest('a[href]')){
-      if(typeof addMissionProgress === 'function') addMissionProgress('watch_video', 1);
-    }
+    // switch_theme mission removed
   });
 
   heroApp = pickHero();
@@ -719,4 +796,4 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-</html>
+  </html>
