@@ -1,0 +1,33 @@
+name: Auto Acak Kode
+
+on:
+  push:
+    branches: [ "main" ] # Ganti ke "master" kalau branch kamu master
+
+jobs:
+  acak:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Ambil Kode
+        uses: actions/checkout@v3
+
+      - name: Siapin Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Alat Acak
+        run: npm install javascript-obfuscator
+
+      - name: Jalanin acak.js
+        run: node acak.js
+
+      - name: Simpan File Acak ke GitHub
+        run: |
+          git config --global user.name "Robot Acak"
+          git config --global user.email "bot@github.com"
+          git add data.min.js index.min.html
+          git commit -m "🤖 Otomatis ngacak file" || echo "Tidak ada perubahan"
+          git push
