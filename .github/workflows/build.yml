@@ -23,26 +23,35 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Install & Obfuscate
+      - name: Install Dependencies & Obfuscate
         run: |
-          # Install semua dependensi Capacitor dan Obfuscator
-          npm install
+          # 1. Pastikan package.json ada (jika belum ada di repo, buat otomatis)
+          if [ ! -f "package.json" ]; then
+            npm init -y
+          fi
+
+          # 2. Install semua modul yang dibutuhkan termasuk obfuscator & capacitor
           npm install javascript-obfuscator @capacitor/cli @capacitor/core @capacitor/android
-          
-          # Jalankan robot pengacak
+
+          # 3. Jalankan skrip pengacak (acak.js)
           node acak.js
 
       - name: Build Android
         run: |
+          # Inisialisasi capacitor jika belum tersetting
+          if [ ! -f "capacitor.config.json" ] && [ ! -f "capacitor.config.ts" ]; then
+            npx cap init Appnesia com.appnesia.web --web-dir www
+          fi
+
           # Cek kalau folder android belum ada, baru di-add
           if [ ! -d "android" ]; then
             npx cap add android
           fi
           
-          # Sinkronisasi file www (yang udah acak) ke Android
+          # Sinkronisasi folder www (hasil acakan) ke Android
           npx cap sync android
           
-          # Build APK
+          # Build APK Debug
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
