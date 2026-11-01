@@ -25,12 +25,12 @@ jobs:
 
       - name: Install Dependencies & Obfuscate
         run: |
-          # 1. Pastikan package.json ada (jika belum ada di repo, buat otomatis)
+          # 1. Pastikan package.json ada
           if [ ! -f "package.json" ]; then
             npm init -y
           fi
 
-          # 2. Install semua modul yang dibutuhkan termasuk obfuscator & capacitor
+          # 2. Install semua modul
           npm install javascript-obfuscator @capacitor/cli @capacitor/core @capacitor/android
 
           # 3. Jalankan skrip pengacak (acak.js)
@@ -43,21 +43,49 @@ jobs:
             npx cap init Appnesia com.appnesia.web --web-dir www
           fi
 
-          # Cek kalau folder android belum ada, baru di-add
+          # Cek kalau folder android belum ada
           if [ ! -d "android" ]; then
             npx cap add android
           fi
           
-          # Sinkronisasi folder www (hasil acakan) ke Android
+          # Sinkronisasi
           npx cap sync android
           
-          # Build APK Debug
+          # Build APK Release (Kita ubah dari debug ke release)
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease
+          cd ..
 
-      - name: Upload APK Artifact
+      # ==========================================
+      # TAMBAHAN: BIKIN KEYSTORE & TANDA TANGANI
+      # ==========================================
+      - name: Generate Keystore
+        run: |
+          keytool -genkey -v \
+            -keystore appnesia.jks \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias ${{ secrets.ALIAS }} \
+            -storepass ${{ secrets.PASS }} \
+            -keypass ${{ secrets.KEYPASS }} \
+            -dname "CN=Appnesia, O=Appnesia, C=ID"
+
+      - name: Sign APK
+        run: |
+          # Cari file APK hasil build tadi
+          APK=$(find android/app/build/outputs/apk/release -name "*.apk" | head -1)
+          
+          # Tanda tangani APK-nya
+          $ANDROID_HOME/build-tools/34.0.0/apksigner sign \
+            --ks appnesia.jks \
+            --ks-pass pass:${{ secrets.PASS }} \
+            --key-pass pass:${{ secrets.KEYPASS }} \
+            --ks-key-alias ${{ secrets.ALIAS }} \
+            --out appnesia-signed.apk \
+            "$APK"
+
+      - name: Upload Signed APK
         uses: actions/upload-artifact@v4
         with:
-          name: Appnesia-Capacitor-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: Appnesia-Signed-APK
+          path: appnesia-signed.apk
