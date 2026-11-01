@@ -274,14 +274,19 @@
 <div class="backdrop" id="shopBackdrop"><div class="modal mission-modal-content" id="shopModal"></div></div>
 <div id="toast"></div>
 
+<!-- FILE DATA.JS KAMU -->
 <script src="data.js"></script>
+
+<!-- LOGIKA UTAMA INDEX.HTML -->
 <script>
 window.addEventListener('DOMContentLoaded', () => {
+  // 1. Cek apakah data.js berhasil dimuat
   if (typeof APPS === 'undefined' || typeof CAT_META === 'undefined') {
     document.getElementById('hero').innerHTML = `<div style="text-align:center; padding: 40px; color: white;"><h2>⚠️ Gagal Memuat Data</h2><p>Pastikan file <b>data.js</b> ada di folder yang sama.</p></div>`;
     return;
   }
 
+  // 2. State Aplikasi
   const state = {
     filter: 'Semua',
     query: '',
@@ -299,12 +304,15 @@ window.addEventListener('DOMContentLoaded', () => {
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const DL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
 
+  // 3. Render Misi
   function renderMissions() {
     if (typeof MISSIONS === 'undefined' || typeof MISSION_STATE === 'undefined') return;
+    
     const done = doneCount();
     const total = MISSIONS.length;
     const percent = Math.round((done / total) * 100);
 
+    // Badge notif di tombol misi
     const missionBtn = document.getElementById('missionBtn');
     if(missionBtn){
       const oldBadge = missionBtn.querySelector('.badge-dot');
@@ -318,6 +326,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Badge notif di tombol shop (poin bisa dipakai)
     const shopBtn = document.getElementById('shopBtn');
     if(shopBtn){
       const oldBadge = shopBtn.querySelector('.badge-dot');
@@ -332,6 +341,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Render modal misi
     const modalEl = document.getElementById('missionModal');
     if(modalEl){
       const missionItemsHTML = MISSIONS.map(m => {
@@ -339,7 +349,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const isDone = cur >= m.goal;
         const pct = Math.round((cur / m.goal) * 100);
         return `
-          <div class="mission-item${isDone ? ' done' : ''}">
+                    <div class="mission-item${isDone ? ' done' : ''}">
             <div class="mission-icon">${m.icon}</div>
             <div class="mission-body">
               <p class="mission-name">${esc(m.name)} ${isDone ? '<span style="font-size:10px;opacity:.8">✓</span>' : ''}</p>
@@ -373,8 +383,11 @@ window.addEventListener('DOMContentLoaded', () => {
       `;
     }
   }
+
+  // Ekspos ke window agar data.js bisa memanggil
   window.renderMissions = renderMissions;
 
+  // 4. Render Toko Poin
   function renderShop(){
     const modalEl = document.getElementById('shopModal');
     if(!modalEl || typeof SHOP_ITEMS === 'undefined') return;
@@ -410,6 +423,7 @@ window.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
+  // 5. Render Aplikasi
   function filteredApps(){
     let list = APPS.slice();
     if(state.filter === 'Favorit') list = list.filter(a => state.favs[a.id]);
@@ -532,6 +546,7 @@ window.addEventListener('DOMContentLoaded', () => {
     $('#grid').innerHTML = list.length ? list.map(cardHTML).join('') : emptyHTML();
   }
 
+  // 6. Render Modal Detail Aplikasi
   function renderModal(id){
     const app = findApp(id);
     if(!app) return;
@@ -562,6 +577,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if(openId) renderModal(openId);
   }
 
+  // 7. Toast
   let toastTimer;
   function toast(msg){
     const el = $('#toast');
@@ -572,6 +588,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   window.showToast = toast;
 
+  // 8. Favorit
   function toggleFav(id){
     if(state.favs[id]) delete state.favs[id];
     else state.favs[id] = true;
@@ -600,6 +617,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if(app) toast(state.favs[id] ? `★ ${app.name} disimpan ke favorit` : `☆ ${app.name} dihapus dari favorit`);
   }
 
+  // 9. Misi: catat unduhan (download_10)
   function trackDownload(appId){
     if(typeof MISSION_STATE === 'undefined' || typeof MISSIONS === 'undefined') return;
     if(!MISSION_STATE.downloadedApps) MISSION_STATE.downloadedApps = [];
@@ -623,6 +641,7 @@ window.addEventListener('DOMContentLoaded', () => {
     renderMissions();
   }
 
+  // 10. Buka detail aplikasi
   function openDetail(id){
     openId = id;
     renderModal(id);
@@ -677,13 +696,17 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = '';
   }
 
+  // 11. Event listeners global
   document.addEventListener('click', (e) => {
+    // Tombol Misi & Shop
     if(e.target.closest('#missionBtn')){ e.preventDefault(); openMissions(); return; }
     if(e.target.closest('#shopBtn')){ e.preventDefault(); openShop(); return; }
 
+    // Tutup modal misi / shop
     if(e.target.closest('[data-mission-close]') || e.target.id === 'missionBackdrop'){ closeMissions(); return; }
     if(e.target.closest('[data-shop-close]') || e.target.id === 'shopBackdrop'){ closeShop(); return; }
 
+    // Tombol Beli di toko
     const buyEl = e.target.closest('[data-buy]');
     if(buyEl){
       e.preventDefault();
@@ -694,18 +717,23 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Tangkap klik link unduh (sebelum cek a[href] return)
     const dlEl = e.target.closest('[data-dl-app]');
     if(dlEl){
       trackDownload(dlEl.dataset.dlApp);
+      // biarkan link terbuka normal
     }
 
     if(e.target.closest('a[href]')) return;
 
+    // Tombol favorit
     const favEl = e.target.closest('[data-fav]');
     if(favEl){ toggleFav(favEl.dataset.fav); return; }
 
+    // Tombol close detail
     if(e.target.closest('[data-close]')){ closeDetail(); return; }
 
+    // Klik kategori
     const catEl = e.target.closest('.cat-tile');
     if(catEl){
       state.filter = catEl.dataset.cat;
@@ -735,8 +763,10 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Klik kartu/rank → buka detail
     const detailEl = e.target.closest('[data-detail]');
     if(detailEl){
+      // Kalau yang diklik justru tombol Unduh di hero, jangan buka detail
       if(e.target.closest('[data-hero-dl]')) return;
       openDetail(detailEl.dataset.detail);
       return;
@@ -745,6 +775,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if(e.target.id === 'backdrop') closeDetail();
   });
 
+  // Tombol Unduh di hero → catat misi download
   document.addEventListener('click', (e) => {
     const heroDl = e.target.closest('[data-hero-dl]');
     if(heroDl){
@@ -752,6 +783,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ESC tutup semua modal
   document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape'){
       if(openId) closeDetail();
@@ -760,11 +792,13 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Search
   $('#search').addEventListener('input', (e) => {
     state.query = e.target.value;
     render();
   });
 
+  // 12. Tema (tanpa misi switch_theme)
   const savedTheme = localStorage.getItem('appnesia:theme') || 'light';
   document.documentElement.dataset.theme = savedTheme;
   const themeBtn = $('#themeBtn');
@@ -775,9 +809,10 @@ window.addEventListener('DOMContentLoaded', () => {
     document.documentElement.dataset.theme = next;
     localStorage.setItem('appnesia:theme', next);
     themeBtn.textContent = next === 'dark' ? '☀️' : '🌙';
-    // switch_theme mission removed
+    // Misi switch_theme DIHAPUS — tidak ada lagi progress tema
   });
 
+  // 13. Init & auto reset harian
   heroApp = pickHero();
   render();
   renderMissions();
@@ -796,4 +831,4 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-  </html>
+</html> 
