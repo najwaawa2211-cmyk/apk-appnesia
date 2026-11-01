@@ -27,7 +27,7 @@ try {
     process.exit(1);
 }
 
-// 2. ACAK INDEX.HTML (Base64 Aman untuk WebView Android)
+// 2. ACAK INDEX.HTML
 try {
     if (fs.existsSync('index.html')) {
         let html = fs.readFileSync('index.html', 'utf8');
@@ -50,17 +50,13 @@ try {
             }
         });
 
-        // Ubah ke Base64
+        // Simpan index.html asli yang udah diacak (biar data.js bisa dibaca)
+        fs.writeFileSync(path.join(targetDir, 'index.html'), html);
+        console.log('✅ index.html asli disimpan (tapi disembunyikan).');
+
+        // Buat file loader
         const base64Html = Buffer.from(html, 'utf8').toString('base64');
         
-        // Pecah jadi beberapa bagian biar ringan
-        const CHUNK_SIZE = 8192;
-        let chunks = [];
-        for (let i = 0; i < base64Html.length; i += CHUNK_SIZE) {
-            chunks.push(`"${base64Html.slice(i, i + CHUNK_SIZE)}"`);
-        }
-
-        // Loader Anti-Rusak (Pakai DOMParser)
         const loaderHtml = `<!DOCTYPE html>
 <html>
 <head>
@@ -68,57 +64,41 @@ try {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Appnesia</title>
 <style>
-  body { margin:0; padding:0; background:#000; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; }
-  #loader { text-align:center; font-size: 14px; }
+  body, html { margin:0; padding:0; height:100%; background:#000; overflow:hidden; }
+  #frame { width:100%; height:100%; border:none; }
 </style>
 </head>
 <body>
-<div id="loader">
-  <h3>Memuat Aplikasi...</h3>
-</div>
 <script>
   try {
-    var b64 = [
-      ${chunks.join(',')}
-    ].join('');
-
+    var b64 = "${base64Html}";
     var binary = atob(b64);
-    var len = binary.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) {
         bytes[i] = binary.charCodeAt(i);
     }
-    
     var decodedHtml = new TextDecoder('utf-8').decode(bytes);
 
-    // 🛠️ TRIK ANTI RUSAK: Parse HTML asli, lalu suntikkan ke WebView
-    var parser = new DOMParser();
-    var doc = parser.parseFromString(decodedHtml, 'text/html');
+    // Kita timpa isi index.html pakai hasil decode
+    // Lalu buka pakai iframe lokal supaya data.js kebaca
+    var iframe = document.createElement('iframe');
+    iframe.id = 'frame';
     
-    // 1. Ambil CSS & Meta tag asli
-    document.head.innerHTML = doc.head.innerHTML;
-    
-    // 2. Ambil Body asli
-    document.body.innerHTML = doc.body.innerHTML;
-
-    // 3. Jalankan ulang script asli (biar fitur & tombol jalan)
-    var scripts = document.body.querySelectorAll('script');
-    scripts.forEach(function(oldScript) {
-        var newScript = document.createElement('script');
-        Array.from(oldScript.attributes).forEach(function(attr) { newScript.setAttribute(attr.name, attr.value); });
-        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-        oldScript.parentNode.replaceChild(newScript, oldScript);
-    });
+    // iframe ini ngarah ke file index.html yang ada di folder yang sama
+    iframe.src = './index.html';
+    document.body.appendChild(iframe);
 
   } catch (e) {
-    document.body.innerHTML = "<h2 style='color:red;text-align:center;'>Gagal memuat: " + e.message + "</h2>";
+    document.body.innerHTML = "<h2 style='color:red;text-align:center;margin-top:20vh;'>Gagal memuat: " + e.message + "</h2>";
   }
 </script>
 </body>
 </html>`;
 
-        fs.writeFileSync(path.join(targetDir, 'index.html'), loaderHtml);
-        console.log('✅ index.html berhasil dienkripsi total dengan aman!');
+        // Simpan loader ke file terpisah, misal app.html
+        // Kita nanti ubah entry point capacitor ke app.html
+        fs.writeFileSync(path.join(targetDir, 'app.html'), loaderHtml);
+        console.log('✅ app.html (loader) berhasil dibuat!');
     } else {
         console.error('❌ File index.html tidak ditemukan!');
         process.exit(1);
@@ -126,4 +106,4 @@ try {
 } catch (e) {
     console.error('❌ Gagal index.html:', e.message);
     process.exit(1);
-                   }
+}
