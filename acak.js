@@ -3,59 +3,50 @@ const path = require('path');
 const JavaScriptObfuscator = require('javascript-obfuscator');
 
 const targetDir = 'www';
-if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
-}
+const assetsDir = path.join(targetDir, 'assets');
 
-console.log('Memulai Enkripsi Tingkat Dewa (Anti-Bongkar)...');
+if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
 
-// 1. BACA & ACAK DATA.JS
+console.log('Memulai Penyamaran Tingkat Dewa...');
+
+// 1. ACAK DATA.JS
 let dataJsCode = '';
 if (fs.existsSync('data.js')) {
     const data = fs.readFileSync('data.js', 'utf8');
     const result = JavaScriptObfuscator.obfuscate(data, {
-        compact: true,
-        stringArray: true,
-        stringArrayEncoding: ['base64'],
-        identifierNamesGenerator: 'hexadecimal'
+        compact: true, stringArray: true, stringArrayEncoding: ['base64'], identifierNamesGenerator: 'hexadecimal'
     });
     dataJsCode = result.getObfuscatedCode();
 }
 
-// 2. PROSES INDEX.HTML
+// 2. PROSES HTML
 if (fs.existsSync('index.html')) {
     let html = fs.readFileSync('index.html', 'utf8');
 
-    // Acak script JS di dalam HTML
+    // Acak JS
     html = html.replace(/<script(?![^>]*\bsrc\b)[^>]*>([\s\S]*?)<\/script>/gi, (match, code) => {
         if (!code.trim()) return match;
         try {
             const res = JavaScriptObfuscator.obfuscate(code, {
-                compact: true,
-                stringArray: true,
-                stringArrayEncoding: ['base64'],
-                identifierNamesGenerator: 'hexadecimal'
+                compact: true, stringArray: true, stringArrayEncoding: ['base64'], identifierNamesGenerator: 'hexadecimal'
             });
             return `<script>${res.getObfuscatedCode()}</script>`;
-        } catch (err) {
-            return match;
-        }
+        } catch (err) { return match; }
     });
 
-    // Suntik data.js ke dalam HTML (biar gak perlu file eksternal)
-    if (dataJsCode) {
-        html = html.replace('</body>', `<script>\n${dataJsCode}\n</script>\n</body>`);
-    }
+    // Suntik data.js
+    if (dataJsCode) html = html.replace('</body>', `<script>\n${dataJsCode}\n</script>\n</body>`);
 
-    // Ubah HTML jadi Base64 (bukan teks biasa)
     const base64Html = Buffer.from(html, 'utf8').toString('base64');
     
-    // Simpan sebagai file .bin (File Binary, Gak Bisa Dibaca Manusia)
-    fs.writeFileSync(path.join(targetDir, 'app.bin'), base64Html);
-    console.log('✅ Kode asli disembunyikan ke dalam app.bin');
+    // 🔥 PENYAMARAN: Kita simpan di folder 'assets' dengan nama '.app.js'
+    // File titik di depan biasanya disembunyikan oleh sistem.
+    fs.writeFileSync(path.join(assetsDir, '.app.js'), base64Html);
+    console.log('✅ Kode disamarkan jadi: assets/.app.js');
 }
 
-// 3. BUAT INDEX.HTML PALSU UNTUK MEMBUKA .BIN
+// 3. BUAT INDEX.HTML PALSU
 const fakeIndex = `<!DOCTYPE html>
 <html>
 <head>
@@ -67,18 +58,16 @@ const fakeIndex = `<!DOCTYPE html>
 <body>
 <div id="root"><h3>Memuat Aplikasi...</h3></div>
 <script>
-  // Ambil file .bin (file rahasia), lalu ubah jadi HTML
-  fetch('./app.bin')
+  // Ambil file samaran
+  fetch('./assets/.app.js')
     .then(res => res.text())
     .then(b64 => {
+        if(!b64 || b64.trim() === '') throw new Error("File kosong/gagal dimuat");
         var binary = atob(b64);
         var bytes = new Uint8Array(binary.length);
-        for (var i = 0; i < binary.length; i++) {
-            bytes[i] = binary.charCodeAt(i);
-        }
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
         var decodedHtml = new TextDecoder('utf-8').decode(bytes);
         
-        // Tulis ke halaman tanpa nge-blank
         document.open();
         document.write(decodedHtml);
         document.close();
@@ -91,4 +80,4 @@ const fakeIndex = `<!DOCTYPE html>
 </html>`;
 
 fs.writeFileSync(path.join(targetDir, 'index.html'), fakeIndex);
-console.log('✅ Index asli LENYAP, diganti file peluncur .bin');
+console.log('✅ Selesai! Index asli LENYAP.');
