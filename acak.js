@@ -1,11 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const JavaScriptObfuscator = require('javascript-obfuscator');
-const cheerio = require('cheerio');
 
 const TARGET_DIR = 'www'; 
 
-console.log('🛡️ Memulai proses Obfuscation & Minify...');
+console.log('🛡️ Memulai proses Obfuscation...');
 
 if (!fs.existsSync(TARGET_DIR)) fs.mkdirSync(TARGET_DIR);
 
@@ -24,43 +23,30 @@ try {
     console.log('✅ www/data.js berhasil dibuat (Acak).');
 } catch(e) { console.log('Gagal acak data.js:', e); }
 
-// 2. Acak & Hancurkan index.html menggunakan CHEERIO
-async function prosesIndex() {
-    try {
-        const { minify } = await import('html-minifier-terser');
-        let indexAsli = fs.readFileSync('index.html', 'utf8');
+// 2. Acak index.html (Tanpa library tambahan, pakai Regex Super Aman)
+try {
+    let indexAsli = fs.readFileSync('index.html', 'utf8');
+    
+    // Mencari tag <script> yang TIDAK punya atribut src="..."
+    const regexScript = /<script(?![^>]*\bsrc\b)[^>]*>([\s\S]*?)<\/script>/gi;
+    
+    let indexAcak = indexAsli.replace(regexScript, (match, isiScript) => {
+        if (isiScript.trim() === '') return match;
         
-        const $ = cheerio.load(indexAsli);
+        try {
+            const acak = JavaScriptObfuscator.obfuscate(isiScript, {
+                compact: true,
+                stringArray: true,
+                stringArrayEncoding: ['base64'],
+                identifierNamesGenerator: 'hexadecimal'
+            }).getObfuscatedCode();
+            
+            return `<script>${acak}</script>`;
+        } catch(err) {
+            return match;
+        }
+    });
 
-        $('script').each((i, el) => {
-            const src = $(el).attr('src');
-            if (src) return;
-
-            const isiScript = $(el).html();
-            if (isiScript && isiScript.trim() !== '') {
-                const acak = JavaScriptObfuscator.obfuscate(isiScript, {
-                    compact: true,
-                    stringArray: true,
-                    stringArrayEncoding: ['base64'],
-                    identifierNamesGenerator: 'hexadecimal'
-                }).getObfuscatedCode();
-                
-                $(el).html(acak);
-            }
-        });
-
-        let htmlAcak = $.html();
-
-        const finalHTML = await minify(htmlAcak, {
-            collapseWhitespace: true,
-            removeComments: true,
-            minifyCSS: true,
-            minifyJS: false
-        });
-
-        fs.writeFileSync(path.join(TARGET_DIR, 'index.html'), finalHTML);
-        console.log('✅ www/index.html berhasil diacak total pakai Cheerio.');
-    } catch(e) { console.log('Gagal acak index.html:', e); }
-}
-
-prosesIndex();
+    fs.writeFileSync(path.join(TARGET_DIR, 'index.html'), indexAcak);
+    console.log('✅ www/index.html berhasil diacak.');
+} catch(e) { console.log('Gagal acak index.html:', e); }
