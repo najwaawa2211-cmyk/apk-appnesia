@@ -139,7 +139,7 @@ const APPS = [
   {id:'skillshare', name:'Skillshare', dev:'Skillshare', cat:'Edukasi', icon:'🎨', color:'#00FF84', pkg:'com.skillshare.Skillshare', desc:'Kelas kreatif dari praktisi industri.'},
   {id:'sololearn', name:'SoloLearn', dev:'SoloLearn', cat:'Edukasi', icon:'💻', color:'#149EF2', pkg:'com.sololearn', desc:'Belajar coding gratis di ponsel.'},
   {id:'codecademy', name:'Codecademy Go', dev:'Codecademy', cat:'Edukasi', icon:'💻', color:'#1F4056', pkg:'com.ryzac.codecademygo', desc:'Latihan coding dari Codecademy.'},
-  {id:'brilliant', name:'Brilliant', dev:'Brilliant', cat:'Edukasi', icon:'💡', color:'#30B0C7', pkg:'org.brilliant.android', desc:'Belajar matematika dan sains interaktif.'},
+    {id:'brilliant', name:'Brilliant', dev:'Brilliant', cat:'Edukasi', icon:'💡', color:'#30B0C7', pkg:'org.brilliant.android', desc:'Belajar matematika dan sains interaktif.'},
   {id:'tofel', name:'TOEFL Go!', dev:'ETS', cat:'Edukasi', icon:'📝', color:'#0F4C81', pkg:'', desc:'Latihan resmi persiapan tes TOEFL.'},
 
   /* ==================== KEUANGAN (20) ==================== */
@@ -272,6 +272,9 @@ const APPS = [
   {id:'gofood', name:'GoFood', dev:'Gojek', cat:'Makanan', icon:'🍔', color:'#00AA13', pkg:'', desc:'Pesan antar makanan dari Gojek.'}
 ];
 
+/* ============================================================
+   META KATEGORI
+   ============================================================ */
 const CAT_META = [
   {cat:'Semua',        emoji:'🌟'},
   {cat:'Game',         emoji:'🎮'},
@@ -289,6 +292,11 @@ const CAT_META = [
   {cat:'Favorit',      emoji:'⭐'}
 ];
 
+/* ============================================================
+   MISI HARIAN
+   - switch_theme DIHAPUS
+   - download_10 DITAMBAHKAN
+   ============================================================ */
 const MISSIONS = [
   { id: 'open_detail', icon: '👀', name: 'Jelajah Aplikasi',      desc: 'Buka detail 3 aplikasi',                goal: 3,  reward: 15 },
   { id: 'save_fav',    icon: '⭐', name: 'Kolektor Favorit',       desc: 'Simpan 2 aplikasi ke favorit',          goal: 2,  reward: 20 },
@@ -297,6 +305,9 @@ const MISSIONS = [
   { id: 'browse_cat',  icon: '🗂️', name: 'Penjelajah Kategori',    desc: 'Kunjungi 3 kategori berbeda',           goal: 3,  reward: 20 }
 ];
 
+/* ============================================================
+   STATE MISI
+   ============================================================ */
 const MISSION_STORE_KEY = 'appnesia:missions';
 const todayKey = () => {
   const d = new Date();
@@ -310,7 +321,7 @@ function freshMissionState(date, keepPoints = 0){
     claimed:  MISSIONS.reduce((acc,m)=>{ acc[m.id]=false; return acc; }, {}),
     seenCats: [],
     seenApps: [],
-    downloadedApps: [],
+    downloadedApps: [],   // untuk misi download_10
     points: keepPoints
   };
 }
@@ -321,6 +332,7 @@ function loadMissionState(){
   if(!raw) return freshMissionState(today);
   try{
     const parsed = JSON.parse(raw);
+    // Reset harian (poin tetap)
     if(parsed.date !== today) return freshMissionState(today, parsed.points || 0);
     MISSIONS.forEach(m => {
       if(typeof parsed.progress[m.id] !== 'number') parsed.progress[m.id] = 0;
@@ -369,6 +381,9 @@ function addMissionProgress(id, amount = 1){
   if(typeof window.renderMissions === 'function') window.renderMissions();
 }
 
+/* ============================================================
+   TOKO POIN (SHOP) — Bayar pakai poin misi harian
+   ============================================================ */
 const SHOP_ITEMS = [
   { id: 'theme_gold',  name: 'Tema Emas Premium',  icon: '👑', price: 80,  desc: 'Buka akses tema emas eksklusif.' },
   { id: 'badge_star',  name: 'Badge Bintang',      icon: '🌟', price: 40,  desc: 'Badge bintang di kartu aplikasi favorit.' },
@@ -401,8 +416,9 @@ function buyShopItem(id){
   MISSION_STATE.points -= item.price;
   SHOP_STATE[id] = true;
 
+  // Efek khusus item
   if(id === 'lucky_dice'){
-    const bonus = 10 + Math.floor(Math.random() * 41);
+    const bonus = 10 + Math.floor(Math.random() * 41); // 10–50
     MISSION_STATE.points += bonus;
     saveMissionState();
     saveShopState();
@@ -414,7 +430,10 @@ function buyShopItem(id){
   return { ok:true, msg:`✅ Berhasil membeli ${item.name}!` };
 }
 
-if(typeof window !== 'undefined'){
+/* ============================================================
+   EKSPOR KE GLOBAL (agar bisa diakses dari index.html)
+   ============================================================ */
+ if(typeof window !== 'undefined'){
   window.APPS              = APPS;
   window.CAT_META          = CAT_META;
   window.MISSIONS          = MISSIONS;
