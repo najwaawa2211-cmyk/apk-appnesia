@@ -26,21 +26,16 @@ jobs:
       - name: Build Android APK with Capacitor
         run: |
           npm install
-          
-          # CUKUP INSTALL INI SAJA (Anti Error)
           npm install javascript-obfuscator
 
-          # JALANKAN ROBOT ACAK
-          node acak.js
+          # JALANKAN 2 ROBOT TERPISAH
+          node acak-data.js
+          node acak-index.js
 
-          # Inisialisasi Capacitor
           npx cap init Appnesia com.appnesia.web --web-dir www
-
-          # Tambahkan platform android dan sinkronkan
           npx cap add android
           npx cap sync android
 
-          # Masuk ke folder android lalu build apk debug
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
