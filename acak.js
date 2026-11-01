@@ -3,28 +3,25 @@ const path = require('path');
 const JavaScriptObfuscator = require('javascript-obfuscator');
 
 const targetDir = 'www';
-const assetsDir = path.join(targetDir, 'assets');
-
 if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
 
-console.log('Memulai Penyamaran Tingkat Dewa...');
+console.log('Menghilangkan file asli dan menyamarkan...');
 
-// 1. ACAK DATA.JS
-let dataJsCode = '';
+// 1. Acak data.js
+let dataJsObfuscated = '';
 if (fs.existsSync('data.js')) {
     const data = fs.readFileSync('data.js', 'utf8');
     const result = JavaScriptObfuscator.obfuscate(data, {
         compact: true, stringArray: true, stringArrayEncoding: ['base64'], identifierNamesGenerator: 'hexadecimal'
     });
-    dataJsCode = result.getObfuscatedCode();
+    dataJsObfuscated = result.getObfuscatedCode();
 }
 
-// 2. PROSES HTML
+// 2. Proses index.html
 if (fs.existsSync('index.html')) {
     let html = fs.readFileSync('index.html', 'utf8');
 
-    // Acak JS
+    // Acak JS di dalam HTML
     html = html.replace(/<script(?![^>]*\bsrc\b)[^>]*>([\s\S]*?)<\/script>/gi, (match, code) => {
         if (!code.trim()) return match;
         try {
@@ -35,18 +32,21 @@ if (fs.existsSync('index.html')) {
         } catch (err) { return match; }
     });
 
-    // Suntik data.js
-    if (dataJsCode) html = html.replace('</body>', `<script>\n${dataJsCode}\n</script>\n</body>`);
+    // Suntik data.js ke dalam HTML
+    if (dataJsObfuscated) html = html.replace('</body>', `<script>\n${dataJsObfuscated}\n</script>\n</body>`);
 
+    // Ubah seluruh HTML jadi Base64
     const base64Html = Buffer.from(html, 'utf8').toString('base64');
+
+    // 🔥 TRIK: Simpan Base64 ini ke dalam file JS biasa bernama 'chunk-vendor.js'
+    // WebView mengizinkan file .js untuk dibaca, jadi gak bakal error.
+    const chunkJs = `window.__APP_DATA__ = "${base64Html}";`;
     
-    // 🔥 PENYAMARAN: Kita simpan di folder 'assets' dengan nama '.app.js'
-    // File titik di depan biasanya disembunyikan oleh sistem.
-    fs.writeFileSync(path.join(assetsDir, '.app.js'), base64Html);
-    console.log('✅ Kode disamarkan jadi: assets/.app.js');
+    fs.writeFileSync(path.join(targetDir, 'chunk-vendor.js'), chunkJs);
+    console.log('✅ index.html dan data.js LENYAP, diganti jadi chunk-vendor.js');
 }
 
-// 3. BUAT INDEX.HTML PALSU
+// 3. Buat index.html palsu yang bersih
 const fakeIndex = `<!DOCTYPE html>
 <html>
 <head>
@@ -57,27 +57,32 @@ const fakeIndex = `<!DOCTYPE html>
 </head>
 <body>
 <div id="root"><h3>Memuat Aplikasi...</h3></div>
+
+<!-- Panggil file JS penyamar -->
+<script src="chunk-vendor.js"></script>
+
 <script>
-  // Ambil file samaran
-  fetch('./assets/.app.js')
-    .then(res => res.text())
-    .then(b64 => {
-        if(!b64 || b64.trim() === '') throw new Error("File kosong/gagal dimuat");
-        var binary = atob(b64);
-        var bytes = new Uint8Array(binary.length);
-        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-        var decodedHtml = new TextDecoder('utf-8').decode(bytes);
-        
-        document.open();
-        document.write(decodedHtml);
-        document.close();
-    })
-    .catch(e => {
-        document.getElementById('root').innerHTML = "<h2 style='color:red;'>Gagal: " + e.message + "</h2>";
-    });
+  // Tunggu file JS selesai dimuat, lalu bongkar isinya
+  window.addEventListener('load', function() {
+      try {
+          if(!window.__APP_DATA__) throw new Error("Data tidak ditemukan");
+          
+          var b64 = window.__APP_DATA__;
+          var binary = atob(b64);
+          var bytes = new Uint8Array(binary.length);
+          for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+          var decodedHtml = new TextDecoder('utf-8').decode(bytes);
+          
+          document.open();
+          document.write(decodedHtml);
+          document.close();
+      } catch (e) {
+          document.getElementById('root').innerHTML = "<h2 style='color:red;'>Gagal: " + e.message + "</h2>";
+      }
+  });
 </script>
 </body>
 </html>`;
 
 fs.writeFileSync(path.join(targetDir, 'index.html'), fakeIndex);
-console.log('✅ Selesai! Index asli LENYAP.');
+console.log('✅ Selesai!');
