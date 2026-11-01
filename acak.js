@@ -3,50 +3,58 @@ const path = require('path');
 const JavaScriptObfuscator = require('javascript-obfuscator');
 
 const TARGET_DIR = 'www'; 
-
-console.log('🛡️ Memulai proses Obfuscation...');
-
 if (!fs.existsSync(TARGET_DIR)) fs.mkdirSync(TARGET_DIR);
 
-// 1. Acak data.js
+// 1. ACAK DATA.JS (Pakai pengaturan paling kuat)
 try {
     const dataAsli = fs.readFileSync('data.js', 'utf8');
     const dataAcak = JavaScriptObfuscator.obfuscate(dataAsli, {
-        compact: true,
-        controlFlowFlattening: true,
-        stringArray: true,
-        stringArrayEncoding: ['base64'],
+        compact: true, 
+        controlFlowFlattening: true, 
+        stringArray: true, 
+        stringArrayEncoding: ['base64'], 
         identifierNamesGenerator: 'hexadecimal'
     }).getObfuscatedCode();
     
     fs.writeFileSync(path.join(TARGET_DIR, 'data.js'), dataAcak);
-    console.log('✅ www/data.js berhasil dibuat (Acak).');
-} catch(e) { console.log('Gagal acak data.js:', e); }
+    console.log('✅ www/data.js berhasil diacak total.');
+} catch(e) { console.log('Gagal acak data.js:', e.message); }
 
-// 2. Acak index.html (Tanpa library tambahan, pakai Regex Super Aman)
+// 2. ACAK INDEX.HTML (Matikan fitur yang bikin crash)
 try {
     let indexAsli = fs.readFileSync('index.html', 'utf8');
-    
-    // Mencari tag <script> yang TIDAK punya atribut src="..."
-    const regexScript = /<script(?![^>]*\bsrc\b)[^>]*>([\s\S]*?)<\/script>/gi;
-    
-    let indexAcak = indexAsli.replace(regexScript, (match, isiScript) => {
-        if (isiScript.trim() === '') return match;
+    console.log('Panjang index asli:', indexAsli.length);
+
+    const regex = /<script(?![^>]*\bsrc\b)[^>]*>([\s\S]*?)<\/script>/gi;
+    let isChanged = false;
+
+    const indexAcak = indexAsli.replace(regex, (match, scriptContent) => {
+        if (scriptContent.trim() === '') return match;
         
         try {
-            const acak = JavaScriptObfuscator.obfuscate(isiScript, {
+            const obfuscated = JavaScriptObfuscator.obfuscate(scriptContent, {
                 compact: true,
                 stringArray: true,
                 stringArrayEncoding: ['base64'],
-                identifierNamesGenerator: 'hexadecimal'
+                identifierNamesGenerator: 'hexadecimal',
+                controlFlowFlattening: false, // WAJIB FALSE biar gak crash di DOM
+                deadCodeInjection: false      // WAJIB FALSE biar gak crash di DOM
             }).getObfuscatedCode();
             
-            return `<script>${acak}</script>`;
-        } catch(err) {
+            isChanged = true;
+            return `<script>\n${obfuscated}\n</script>`;
+        } catch (err) {
+            console.log('❌ Gagal mengacak script di HTML:', err.message);
             return match;
         }
     });
 
     fs.writeFileSync(path.join(TARGET_DIR, 'index.html'), indexAcak);
-    console.log('✅ www/index.html berhasil diacak.');
-} catch(e) { console.log('Gagal acak index.html:', e); }
+    console.log('Panjang index acak:', indexAcak.length);
+    
+    if(isChanged) {
+        console.log('✅ www/index.html berhasil diacak!');
+    } else {
+        console.log('⚠️ PERINGATAN: Script di index.html tidak berubah.');
+    }
+} catch(e) { console.log('Gagal baca index.html:', e.message); }
