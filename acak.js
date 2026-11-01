@@ -1,14 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 const JavaScriptObfuscator = require('javascript-obfuscator');
+const HTMLMinifier = require('html-minifier-terser');
 
-const TARGET_DIR = 'www'; // Sesuaikan dengan web-dir di workflow kamu
+const TARGET_DIR = 'www'; 
 
-console.log('🛡️ Memulai proses Obfuscation...');
+console.log('🛡️ Memulai proses Obfuscation & Minify...');
 
 if (!fs.existsSync(TARGET_DIR)) fs.mkdirSync(TARGET_DIR);
 
-// 1. Acak data.js
+// 1. Acak data.js (Sama kayak sebelumnya)
 try {
     const dataAsli = fs.readFileSync('data.js', 'utf8');
     const dataAcak = JavaScriptObfuscator.obfuscate(dataAsli, {
@@ -23,23 +24,39 @@ try {
     console.log('✅ www/data.js berhasil dibuat (Acak).');
 } catch(e) { console.log('Gagal acak data.js:', e); }
 
-// 2. Acak index.html
-try {
-    let indexAsli = fs.readFileSync('index.html', 'utf8');
-    
-    const indexAcak = indexAsli.replace(/<script>([\s\S]*?)<\/script>/g, (match, isiScript) => {
-        if (isiScript.trim() === '' || isiScript.includes('src=')) return match; 
+// 2. Acak & Hancurkan index.html
+async function prosesIndex() {
+    try {
+        let indexAsli = fs.readFileSync('index.html', 'utf8');
         
-        const acak = JavaScriptObfuscator.obfuscate(isiScript, {
-            compact: true,
-            stringArray: true,
-            stringArrayEncoding: ['base64'],
-            identifierNamesGenerator: 'hexadecimal'
-        }).getObfuscatedCode();
-        
-        return `<script>${acak}</script>`;
-    });
+        // Regex lebih pintar: nangkep <script> atau <script type="...">
+        const indexAcak = indexAsli.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gi, (match, isiScript) => {
+            // Kalau script cuma manggil file luar (src="data.js"), biarin aja
+            if (match.includes('src=')) return match; 
+            if (isiScript.trim() === '') return match;
+            
+            // Acak isi scriptnya
+            const acak = JavaScriptObfuscator.obfuscate(isiScript, {
+                compact: true,
+                stringArray: true,
+                stringArrayEncoding: ['base64'],
+                identifierNamesGenerator: 'hexadecimal'
+            }).getObfuscatedCode();
+            
+            return `<script>${acak}</script>`;
+        });
 
-    fs.writeFileSync(path.join(TARGET_DIR, 'index.html'), indexAcak);
-    console.log('✅ www/index.html berhasil dibuat (Acak).');
-} catch(e) { console.log('Gagal acak index.html:', e); }
+        // Minify HTML: Hapus spasi, enter, dan komentar biar jadi 1 baris
+        const finalHTML = await HTMLMinifier.minify(indexAcak, {
+            collapseWhitespace: true,
+            removeComments: true,
+            minifyCSS: true,
+            minifyJS: false // JS udah diacak sama javascript-obfuscator
+        });
+
+        fs.writeFileSync(path.join(TARGET_DIR, 'index.html'), finalHTML);
+        console.log('✅ www/index.html berhasil diacak & di-minify jadi 1 baris.');
+    } catch(e) { console.log('Gagal acak index.html:', e); }
+}
+
+prosesIndex();
