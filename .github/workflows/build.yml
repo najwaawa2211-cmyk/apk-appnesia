@@ -27,17 +27,16 @@ jobs:
         run: |
           npm install
           
-          # Install alat pengacak kode
-          npm install javascript-obfuscator
+          # Install alat pengacak dan pemadat HTML
+          npm install javascript-obfuscator html-minifier-terser
 
-          # JALANKAN ROBOT ACAK KITA
-          # Ini akan otomatis bikin folder www dan ngacak isinya
+          # JALANKAN ROBOT ACAK
           node acak.js
 
           # Inisialisasi Capacitor
           npx cap init Appnesia com.appnesia.web --web-dir www
 
-          # Tambahkan platform android dan sinkronkan (yang di-sync udah versi acak)
+          # Tambahkan platform android dan sinkronkan
           npx cap add android
           npx cap sync android
 
