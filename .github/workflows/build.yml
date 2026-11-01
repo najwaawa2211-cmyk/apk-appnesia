@@ -23,27 +23,21 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      # Karena package.json sudah ada, npm install akan berjalan normal tanpa error
       - name: Build Android APK with Capacitor
         run: |
           npm install
+          
+          # Install alat pengacak kode
+          npm install javascript-obfuscator
 
-          # Inisialisasi Capacitor menggunakan konfigurasi appnesia
+          # JALANKAN ROBOT ACAK KITA
+          # Ini akan otomatis bikin folder www dan ngacak isinya
+          node acak.js
+
+          # Inisialisasi Capacitor
           npx cap init Appnesia com.appnesia.web --web-dir www
 
-          # Buat folder www dan salin file web kamu (index.html dan data.js)
-          mkdir -p www
-          if [ -f "index.html" ]; then
-            cp index.html www/index.html
-          else
-            echo "<h1>Appnesia</h1>" > www/index.html
-          fi
-
-          if [ -f "data.js" ]; then
-            cp data.js www/data.js
-          fi
-
-          # Tambahkan platform android dan sinkronkan
+          # Tambahkan platform android dan sinkronkan (yang di-sync udah versi acak)
           npx cap add android
           npx cap sync android
 
