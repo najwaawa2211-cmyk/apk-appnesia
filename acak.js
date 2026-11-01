@@ -1,49 +1,44 @@
-// acak.js - Script otomatis ngacak Appnesia
 const fs = require('fs');
+const path = require('path');
 const JavaScriptObfuscator = require('javascript-obfuscator');
 
-try {
-    console.log('🛡️ Mulai mengacak data.js dan index.html...');
+// Pastikan folder public ada
+if (!fs.existsSync('public')) fs.mkdirSync('public');
 
-    // 1. Baca data.js asli, lalu acak jadi data.min.js
-    if (fs.existsSync('data.js')) {
-        const dataAsli = fs.readFileSync('data.js', 'utf8');
-        const dataAcak = JavaScriptObfuscator.obfuscate(dataAsli, {
+console.log('🛡️ Memulai proses penyamaran kode...');
+
+// 1. Ambil data.js ASLI, acak, lalu simpan ke public/data.js
+try {
+    const dataAsli = fs.readFileSync('data.js', 'utf8');
+    const dataAcak = JavaScriptObfuscator.obfuscate(dataAsli, {
+        compact: true,
+        stringArray: true,
+        stringArrayEncoding: ['base64'],
+        identifierNamesGenerator: 'hexadecimal'
+    }).getObfuscatedCode();
+    
+    fs.writeFileSync('public/data.js', dataAcak);
+    console.log('✅ File public/data.js berhasil dibuat (Acak Total).');
+} catch(e) { console.log('Gagal acak data.js:', e); }
+
+// 2. Ambil index.html ASLI, acak script-nya, simpan ke public/index.html
+try {
+    let indexAsli = fs.readFileSync('index.html', 'utf8');
+    
+    // Acak semua isi <script>
+    const indexAcak = indexAsli.replace(/<script>([\s\S]*?)<\/script>/g, (match, isiScript) => {
+        if (isiScript.trim() === '' || isiScript.includes('src=')) return match; 
+        
+        const acak = JavaScriptObfuscator.obfuscate(isiScript, {
             compact: true,
-            controlFlowFlattening: true,
             stringArray: true,
             stringArrayEncoding: ['base64'],
             identifierNamesGenerator: 'hexadecimal'
         }).getObfuscatedCode();
         
-        fs.writeFileSync('data.min.js', dataAcak);
-        console.log('✅ data.min.js berhasil dibuat (sejajar)');
-    }
+        return `<script>${acak}</script>`;
+    });
 
-    // 2. Baca index.html asli, ubah data.js jadi data.min.js, lalu acak
-    if (fs.existsSync('index.html')) {
-        let indexAsli = fs.readFileSync('index.html', 'utf8');
-        
-        // Ganti referensi data.js ke data.min.js biar pas di-build pakai yang acak
-        indexAsli = indexAsli.replace(/src="data.js"/g, 'src="data.min.js"');
-        
-        // Ekstrak dan acak script di dalam index.html
-        const acakHtml = indexAsli.replace(/<script>([\s\S]*?)<\/script>/g, (match, scriptContent) => {
-            if (scriptContent.trim() === '' || scriptContent.includes('src=')) return match;
-            const acak = JavaScriptObfuscator.obfuscate(scriptContent, {
-                compact: true,
-                stringArray: true,
-                stringArrayEncoding: ['base64']
-            }).getObfuscatedCode();
-            return `<script>${acak}</script>`;
-        });
-
-        fs.writeFileSync('index.min.html', acakHtml);
-        console.log('✅ index.min.html berhasil dibuat (sejajar)');
-    }
-
-    console.log('🚀 Selesai! File acak sudah siap di-build.');
-
-} catch (error) {
-    console.error('❌ Gagal ngacak:', error);
-          }
+    fs.writeFileSync('public/index.html', indexAcak);
+    console.log('✅ File public/index.html berhasil dibuat (Acak Total).');
+} catch(e) { console.log('Gagal acak index.html:', e); }
